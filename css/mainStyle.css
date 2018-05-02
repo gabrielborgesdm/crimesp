@@ -1,17 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Arbutus+Slab');
-@import url('https://fonts.googleapis.com/css?family=Cinzel:700');
 @import url('https://fonts.googleapis.com/css?family=Volkhov');
 
 
-
-
-body{
-    font-family:'Volkhov', 'Sans-serif' !important;
-}
 .navbar-brand{
     font-family:'Volkhov', 'Sans-serif' !important;
     font-size:2.0rem !important;
 }
 .nav-item{
    font-size:1.2rem !important;
+}
+body{
+    font-family:'Volkhov', 'Sans-serif' !important;
 }

@@ -12,25 +12,22 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto px-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Início</a>
-                    </li>
-                    <li class="nav-item mt-1 text-light">
-                        |
+                        <a class="nav-link" href="index.php">Início</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Criminosos</a>
+                        <a class="nav-link" href="formCriminosos.php">Criminosos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Vítimas</a>
+                        <a class="nav-link" href="formVitimas.php">Vítimas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Crimes</a>
+                        <a class="nav-link" href="formCrimes.php">Crimes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Delitos</a>
+                        <a class="nav-link" href="formDelitos.php">Delitos</a>
                     </li>
                 </ul>          
             </div>
