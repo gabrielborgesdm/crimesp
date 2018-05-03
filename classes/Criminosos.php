@@ -1,19 +1,19 @@
 <?php
 class Criminosos{
 	//Atributos
-	private nome;
-	private endereco;
-	private dataNasc;
-	private tipoPena;
-	private tempoPena;
-	private cpf;
+	private $nome;
+	private $endereco;
+	private $dataNasc;
+	private $tipoPena;
+	private $tempoPena;
+	private $cpf;
 
 	//Métodos
 	
 	//Métodos Especiais
-	public __construct(){
+	//public __construct(){
 
-	}
+	//}
 	public function getNome(){
 		return $this->nome;	
 	}
