@@ -2,7 +2,7 @@
 <section class="container-fluid mt-4 mb-5">
     <div class="row">
         <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
-            <h1 class="text-center mt-4 mb-4 ">Bem vindo ao Crimes SP</h1>
+            <h1 class="text-center mt-4 my-5 ">Bem vindo ao Crimes SP</h1>
             <div class="col-12 mx-auto">
                 <div id="carouselInicio" class="carousel slide border border-1 rounded rounded-5" data-ride="carousel">
                     <ol class="carousel-indicators">

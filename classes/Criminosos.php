@@ -11,9 +11,9 @@ class Criminosos{
 	//Métodos
 	
 	//Métodos Especiais
-	//public __construct(){
+	/*public __construct(){
 
-	//}
+	}*/
 	public function getNome(){
 		return $this->nome;	
 	}
@@ -32,7 +32,6 @@ class Criminosos{
 	public function getCpf(){
 		return $this->cpf;	
 	}
-
 	public function setNome($nome){
 		$this->nome = $nome;
 	}
