@@ -6,8 +6,8 @@
             <div class="col-12 mx-auto">
                 <form method="post" id="formCriminosos" action="processaCriminosos.php">
                     <div class="form-group py-3">
-                        <label for="nomeCriminoso">Nome completo</label>
-                        <input type="text" class="form-control" name="nomeCriminoso" id="nomeCriminoso" required />
+                        <label for="nome">Nome completo</label>
+                        <input type="text" class="form-control" name="nome" id="nome" required />
                     </div> 
                     <div class="form-group py-3">
                         <label for="dataNasc">Data de nascimento</label>
@@ -16,10 +16,22 @@
                     <div class="form-group py-3">
                         <label for="sentenca">Sentença</label>
                         <select name="sentenca" id="sentenca" class="custom-select">
-                            <option value="0" selected>Incerta</option>
-                            <option value="1">Prisão</option>
-                            <option value="2">Sentença de morte</option>
+                            <option value="1" selected>Incerta</option>
+                            <option value="2">Prisão</option>
+                            <option value="3">Sentença de morte</option>
                         </select>
+                    </div>
+                    <div class="form-group py-3" id="groupDataExec">
+                        <label for="dataExec">Data para execução</label>
+                        <input type="date" class="form-control" name="dataExec" id="dataExec"  />
+                    </div>
+                    <div class="form-group py-3" id="groupTempoCadeia">
+                        <label for="tempoPrisao" class="d-block">Tempo de cadeia</label>
+                        <div class="d-flex justify-content-between">
+                            <input type="number" class="form-control d-inline-block col mt-2" placeholder="Anos" name="anosPrisao" id="anosPrisao"  />
+                            <input type="number" class="form-control d-inline-block col mx-2 mt-2" placeholder="Meses" name="mesesPrisao" id="mesesPrisao"  />
+                            <input type="number" class="form-control d-inline-block col mt-2" placeholder="Dias" name="diasPrisao" id="DiasPrisao"  />
+                        </div>
                     </div>
                     <div class="form-group py-3">
                         <label for="endereco">Endereço</label>

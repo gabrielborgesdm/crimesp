@@ -11,9 +11,18 @@ class Criminosos{
 	//Métodos
 	
 	//Métodos Especiais
-	/*public __construct(){
+	public __construct($retorno){
+		$this->setNome($retorno["nome"]);
+		$this->setEndereco($retorno["endereco"]);
+		$this->setDataNasc($retorno["dataNasc"]);
+		$this->setTipoPena($retorno["tipoPena"]);
+		$this->setCpf($retorno["cpf"]);
+		if(isset($retorno["anosPrisao"]){
+			$this->setTempoPena($retorno["anosPrisao"],
+					$retorno["mesesPrisao"], $retorno["diasPrisao"]);
+		}	
+	}
 
-	}*/
 	public function getNome(){
 		return $this->nome;	
 	}
@@ -44,8 +53,11 @@ class Criminosos{
 	public function setTipoPena($tipoPena){
 		$this->tipoPena = $tipoPena;
 	}
-	public function setTempoPena($tempoPena){
-		$this->tempoPena = $tempoPena;
+	public function setTempoPena($dias, $meses, $anos){
+		$tempo = $dias / 31;
+		$tempo += $meses;
+		$tempo += $anos * 12;
+		$this->tempoPena = $tempo;
 	}
 	public function setCpf($cpf){
 		$this->setCpf = $cpf;

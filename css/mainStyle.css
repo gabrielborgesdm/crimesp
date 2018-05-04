@@ -22,6 +22,9 @@ body{
 .divForm{
     display: none;
 }
+#groupTempoCadeia, #groupDataExec{
+    display: none;
+}
 
 #footer{
     opacity: 0.97;
