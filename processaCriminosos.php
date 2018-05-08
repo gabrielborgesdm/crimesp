@@ -40,12 +40,13 @@ if (!empty($_POST["sentenca"])) {
 }
 
 require_once'classes/Criminoso.php';
-require_once 'classes/ConexaoPDO.php';
 $criminoso = new Criminoso($resultado);
-$criminoso->cadastrarCriminoso($conn);
-
-/*
-$retorno["acao"] = 1;
-$retorno["mensagem"] = 1;
-return $retorno;
-*/
+if($conn){
+    $criminoso->cadastrarCriminoso($conn);  
+}
+else{
+    echo"leibe";
+    $retorno["acao"] = 0;
+    $retorno["mensagem"] = 1;
+    return $retorno;  
+}

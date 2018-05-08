@@ -1,7 +1,7 @@
 <?php
-require_once 'classes/ConexaoPDO.php';
+require_once 'ConexaoPDO.php';
 $host = "localhost";
 $dbname = "crimesp";
 $user = "root";
 $password = "";
-$conn = new ConexaoPDO($host, "$dbname;charset=utf8", $user, $password);
+$conn = ConexaoPDO($host, "$dbname;charset=utf8", $user, $password);

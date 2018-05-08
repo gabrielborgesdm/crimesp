@@ -73,13 +73,14 @@ class Criminoso{
     
     //Métodos
     public function cadastrarCriminoso($conn){
+        
         /*
         $sql = 'INSERT INTO criminoso(:p1, :p2, :p3, :p4, :p5, p6)'.
                 ' VALUES(":r1", ":r2", ":r3", ":r4", ":r5", ":r6")';
         */
         $sql = 'SELECT :p1, :r2 FROM criminoso';
 
-        $conn->setSql($sql);
+        $query = prepararSql($sql);
        
         $parametros = Array();
         /*$parametros[":p1"] = "nome";
@@ -97,11 +98,11 @@ class Criminoso{
         $parametros[":p1"] = "nome";
         $parametros[":r2"] = "endereco";
         
-        $conn->bindarSql($parametros);
-        $conn->executar();
-        $erro = $conn->getErro();
-        if(!$erro){
-            print_r($conn->linha);
+        $query = bindarSql($query, $parametros);
+     	$linha = executar($query);
+       
+        if($linha){
+            print_r($linha);
         }else{
             echo"Algo de errado aconteceu";
         }
