@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 08, 2018 at 11:01 PM
+-- Generation Time: May 09, 2018 at 03:34 AM
 -- Server version: 5.7.21
 -- PHP Version: 5.6.35
 
@@ -34,20 +34,46 @@ CREATE TABLE IF NOT EXISTS `criminoso` (
   `nome` varchar(80) COLLATE utf8_bin NOT NULL,
   `endereco` varchar(150) COLLATE utf8_bin DEFAULT NULL,
   `dataNasc` date DEFAULT NULL,
+  `sexo` char(1) COLLATE utf8_bin NOT NULL,
   `cpf` varchar(11) COLLATE utf8_bin DEFAULT NULL,
   `sentenca` int(11) NOT NULL,
   `dataExec` date DEFAULT NULL,
-  `tempoCadeia` int(11) DEFAULT NULL COMMENT 'Meses',
+  `tempoCadeia` varchar(300) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `criminoso`
+-- Table structure for table `delito`
 --
 
-INSERT INTO `criminoso` (`id`, `nome`, `endereco`, `dataNasc`, `cpf`, `sentenca`, `dataExec`, `tempoCadeia`) VALUES
-(1, 'Joao não sei das quantas', 'Rua do Jão, casa do joão', '2001-10-17', '', 1, NULL, 12),
-(2, 'Maria', NULL, '2001-02-28', '98746', 1, NULL, NULL);
+DROP TABLE IF EXISTS `delito`;
+CREATE TABLE IF NOT EXISTS `delito` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(80) COLLATE utf8_bin NOT NULL,
+  `descricao` varchar(180) COLLATE utf8_bin NOT NULL,
+  `sentenca` int(11) NOT NULL,
+  `tempoCadeia` varchar(300) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vitima`
+--
+
+DROP TABLE IF EXISTS `vitima`;
+CREATE TABLE IF NOT EXISTS `vitima` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(80) COLLATE utf8_bin NOT NULL,
+  `endereco` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+  `dataNasc` date DEFAULT NULL,
+  `sexo` char(1) COLLATE utf8_bin NOT NULL,
+  `cpf` varchar(11) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

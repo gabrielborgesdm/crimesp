@@ -14,8 +14,12 @@
         <group>
             <file>file:/F:/Projetos/wamp64/www/crimesp/formCriminosos.php</file>
             <file>file:/F:/Projetos/wamp64/www/crimesp/init.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/formDelitos.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/classes/ConexaoPDO.php</file>
             <file>file:/F:/Projetos/wamp64/www/crimesp/processaCriminosos.php</file>
-            <file>file:/F:/Projetos/wamp64/www/crimesp/ConexaoPDO.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/classes/Delito.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/processaDelitos.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/classes/Vitima.php</file>
             <file>file:/F:/Projetos/wamp64/www/crimesp/classes/Criminoso.php</file>
         </group>
     </open-files>

@@ -1,47 +1,74 @@
 <?php
 require_once 'ConexaoPDO.php';
-class Vitima{
+class Delito{
 	//Atributos
-	public $nome;
-	public $endereco;
-	public $dataNasc;
-	public $cpf;
+	private $nome;
+	private $id;
+	private $descricao;
+	private $sentenca;
+	private $tempoCadeia;
+	private $resultadoPost;
 
     //Métodos Especiais
-	public function __construct($retorno){
-		$this->setNome($retorno["nome"]);
-		$this->setEndereco($retorno["endereco"]);
-		$this->setDataNasc($retorno["dataNasc"]);
-		$this->setCpf($retorno["cpf"]);
-	}
-
-	public function getNome(){
+    public function __construct($resultado) {
+  		$this->setResultadoPost($resultado);
+        $this->setNome($resultado["nome"]);
+        $this->setDescricao($resultado["descricao"]);
+        $this->setSentenca($resultado["sentenca"]);
+        if(!empty($resultado["tempoCadeia"])){
+        	$this->setTempoCadeia($resultado["tempoCadeia"]);     	
+        }
+    }
+    public function getNome(){
 		return $this->nome;	
 	}
-	public function getEndereco(){
-		return $this->endereco;	
+    public function getId(){
+		return $this->id;	
 	}
-	public function getDataNasc(){
-		return $this->dataNasc;	
+	public function getSentenca(){
+		return $this->sentenca;	
 	}
-	public function getCpf(){
-		return $this->cpf;	
+	public function getTempoCadeia(){
+		return $this->tempoCadeia;	
 	}
+    public function getDescricao() {
+        return $this->descricao;
+    }
+    public function getResultadoPost(){
+    	return $this->resultadoPost;
+    }
     public function setNome($nome){
 		$this->nome = $nome;
 	}
-	public function setEndereco($endereco){
-		$this->endereco = $endereco;
+    public function setId($id){
+		$this->id = $id;
 	}
-	public function setDataNasc($dataNasc){
-		$this->dataNasc = $dataNasc;
+	public function setSentenca($sentenca){
+		$this->sentenca = $sentenca;
 	}
-	public function setCpf($cpf){
-		$this->setCpf = $cpf;
+	public function setTempoCadeia($tempoCadeia){
+	
+        $this->tempoCadeia = json_encode($tempoCadeia);   
 	}
-
+    public function setResultadoPost($resultadoPost){
+    	$this->resultadoPost = $resultadoPost;
+    }
+    public function setDescricao($descricao) {
+        $this->descricao = $descricao;
+    }
     //Métodos
-    public function cadastrarVitima($conn){
-     //
+    public function cadastrarDelitos($conexao){
+    	$conexao->setInsertBuilder("delito", $this->getResultadoPost());
+    	echo "<pre>";
+    	#print_r($conexao->getInsertBuilder());
+    	#die();
+    	$conexao->execInsert();
+    	if($conexao->getErro()){
+    		
+    		echo $conexao->getErro();
+    	}
+    	else{
+    		echo "foi";
+    	}
     }
 }

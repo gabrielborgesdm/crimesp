@@ -12,7 +12,26 @@
                     <div class="form-group py-3">
                         <label for="dataNasc">Data de nascimento*</label>
                         <input type="date" class="form-control" name="dataNasc" id="dataNasc" required />
-                    </div> 
+                    </div>
+                    <div class="form-group py-3">
+                        <label class="d-block">Sexo*</label>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" value="M" name="sexo" id="masc" required="required"/>
+                            <label for="masc" class="form-check-label">Masculino</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" value="F" name="sexo" id="fem"/>
+                            <label for="fem" class="form-check-label">Feminino</label>
+                        </div>    
+                    </div>
+                     <div class="form-group py-3">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" class="form-control" name="endereco" id="endereco" />
+                    </div>
+                    <div class="form-group py-3">
+                        <label for="cpf">CPF</label>
+                        <input type="text" class="form-control" name="cpf" maxlength="11" id="cpf" />
+                    </div>
                     <div class="form-group py-3">
                         <label for="sentenca">Sentença*</label>
                         <select name="sentenca" id="sentenca" class="custom-select">
@@ -32,14 +51,6 @@
                             <input type="number" class="form-control d-inline-block col mx-2 mt-2" placeholder="Meses" name="mesesPrisao" id="mesesPrisao"  />
                             <input type="number" class="form-control d-inline-block col mt-2" placeholder="Dias" name="diasPrisao" id="DiasPrisao"  />
                         </div>
-                    </div>
-                    <div class="form-group py-3">
-                        <label for="endereco">Endereço</label>
-                        <input type="text" class="form-control" name="endereco" id="endereco" />
-                    </div>
-                    <div class="form-group py-3">
-                        <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" name="cpf" maxlength="11" id="cpf" />
                     </div>
                     <div class="form-group row py-3">
                         <input type="submit" name="submit" id="submit" class="btn btn-lg col-8 col-md-6 mx-auto btn-outline-secondary">

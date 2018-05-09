@@ -1,10 +1,12 @@
- <?php
+<?php
 require_once 'ConexaoPDO.php';
 class Criminoso{
 	//Atributos
 	private $nome;
+    private $id;
 	private $endereco;
 	private $dataNasc;
+    private $sexo;
 	private $sentenca;
 	private $tempoCadeia;
     private $dataExec;
@@ -16,6 +18,7 @@ class Criminoso{
   		$this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);
         $this->setDataNasc($resultado["dataNasc"]);
+        $this->setSexo($resultado["sexo"]);
         $this->setSentenca($resultado["sentenca"]);
         
         if(!empty($resultado["dataExec"])){
@@ -39,11 +42,17 @@ class Criminoso{
     public function getNome(){
 		return $this->nome;	
 	}
+    public function getId(){
+		return $this->id;	
+	}
 	public function getEndereco(){
 		return $this->endereco;	
 	}
 	public function getDataNasc(){
 		return $this->dataNasc;	
+	}
+    public function getSexo(){
+		return $this->sexo;	
 	}
 	public function getSentenca(){
 		return $this->sentenca;	
@@ -63,12 +72,18 @@ class Criminoso{
     public function setNome($nome){
 		$this->nome = $nome;
 	}
+    public function setId($id){
+		$this->id = $id;
+	}
 	public function setEndereco($endereco){
 		$this->endereco = $endereco;
 	}
 	public function setDataNasc($dataNasc){
 		$this->dataNasc = $dataNasc;
 	}
+    public function setSexo($sexo){
+        $this->sexo($sexo);
+    }
 	public function setSentenca($sentenca){
 		$this->sentenca = $sentenca;
 	}
