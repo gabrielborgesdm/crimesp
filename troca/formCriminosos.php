@@ -6,15 +6,15 @@
             <div class="col-12 mx-auto">
                 <form method="post" id="formCriminosos" action="processaCriminosos.php">
                     <div class="form-group py-3">
-                        <label for="nome">Nome completo*</label>
+                        <label for="nome">Nome completo</label>
                         <input type="text" class="form-control" name="nome" id="nome" required />
                     </div> 
                     <div class="form-group py-3">
-                        <label for="dataNasc">Data de nascimento*</label>
+                        <label for="dataNasc">Data de nascimento</label>
                         <input type="date" class="form-control" name="dataNasc" id="dataNasc" required />
                     </div> 
                     <div class="form-group py-3">
-                        <label for="sentenca">Sentença*</label>
+                        <label for="sentenca">Sentença</label>
                         <select name="sentenca" id="sentenca" class="custom-select">
                             <option value="1" selected>Incerta</option>
                             <option value="2">Prisão</option>
@@ -35,11 +35,11 @@
                     </div>
                     <div class="form-group py-3">
                         <label for="endereco">Endereço</label>
-                        <input type="text" class="form-control" name="endereco" id="endereco" />
+                        <input type="text" class="form-control" name="endereco" id="endereco" required />
                     </div>
                     <div class="form-group py-3">
                         <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" name="cpf" maxlength="11" id="cpf" />
+                        <input type="text" class="form-control" name="cpf" id="cpf" required />
                     </div>
                     <div class="form-group row py-3">
                         <input type="submit" name="submit" id="submit" class="btn btn-lg col-8 col-md-6 mx-auto btn-outline-secondary">
