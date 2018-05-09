@@ -1,17 +1,16 @@
 <?php
-require_once 'ConexaoPDO.php';
+include('configDB.php');
+require_once'classes\ConexaoPDO.php';
 class Vitima{
 	//Atributos
-	private $nome;
-    private $id;
-	private $endereco;
-	private $dataNasc;
-    private $sexo;
-	private $cpf;
-	private $resultadoPost;
+	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
+	private $resultadoPost, $conexao;
 
     //Métodos Especiais
     public function __construct($resultado) {
+        $db = configDB();
+        $conexao = new ConexaoPDO($db['host'], $db['dbname'] .";charset=utf8", $db['user'], $db['password']);
+        $this->setConexao($conexao);
   		$this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);
         $this->setDataNasc($resultado["dataNasc"]);
@@ -23,10 +22,8 @@ class Vitima{
 
         if(!empty($resultado["cpf"])){
         	$this->setCpf($resultado["cpf"]);
-        }			
-        
+        }			        
     }
-
     public function getNome(){
 		return $this->nome;	
 	}
@@ -47,6 +44,9 @@ class Vitima{
 	}
     public function getResultadoPost(){
     	return $this->resultadoPost;
+    }
+    public function getConexao(){
+        return $this->conexao;
     }
     public function setNome($nome){
 		$this->nome = $nome;
@@ -69,8 +69,12 @@ class Vitima{
     public function setResultadoPost($resultadoPost){
     	$this->resultadoPost = $resultadoPost;
     }
+    public function setConexao($conexao){
+        $this->conexao = $conexao;
+    }
     //Métodos
-    public function cadastrarVitima($conexao){
+    public function cadastrarVitima(){
+        $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("vitima", $this->getResultadoPost());
     	echo "<pre>";
     	#print_r($conexao->getInsertBuilder());

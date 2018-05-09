@@ -1,6 +1,4 @@
 <?php
-
-require_once 'init.php';
 require_once'classes/Vitima.php';
 
 $retorno = Array();
@@ -14,4 +12,4 @@ $loc = "Location: formVitimas.php";
 (empty($_POST["sexo"])) ?: $resultado["sexo"] = $_POST["sexo"];
 
 $vitima = new Vitima($resultado);
-$vitima->cadastrarVitima($conexao);
+$vitima->cadastrarVitima();

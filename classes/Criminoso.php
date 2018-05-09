@@ -1,21 +1,18 @@
 <?php
-require_once 'ConexaoPDO.php';
+include('configDB.php');
+require_once'classes\ConexaoPDO.php';
 class Criminoso{
 	//Atributos
-	private $nome;
-    private $id;
-	private $endereco;
-	private $dataNasc;
-    private $sexo;
-	private $sentenca;
-	private $tempoCadeia;
-    private $dataExec;
-	private $cpf;
-	private $resultadoPost;
+	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
+	private $sentenca, $tempoCadeia, $dataExec; 
+	private $resultadoPost, $conexao;
 
     //Métodos Especiais
     public function __construct($resultado) {
-  		$this->setResultadoPost($resultado);
+        $db = configDB();
+        $conexao = new ConexaoPDO($db['host'], $db['dbname'] .";charset=utf8", $db['user'], $db['password']);
+        $this->setConexao($conexao);
+        $this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);
         $this->setDataNasc($resultado["dataNasc"]);
         $this->setSexo($resultado["sexo"]);
@@ -54,20 +51,23 @@ class Criminoso{
     public function getSexo(){
 		return $this->sexo;	
 	}
+    public function getCpf(){
+        return $this->cpf;  
+    }
 	public function getSentenca(){
 		return $this->sentenca;	
 	}
 	public function getTempoCadeia(){
 		return $this->tempoCadeia;	
 	}
-	public function getCpf(){
-		return $this->cpf;	
-	}
     public function getDataExec(){
         return $this->dataExec;
     }
     public function getResultadoPost(){
     	return $this->resultadoPost;
+    }
+    public function getConexao(){
+        return $this->conexao;
     }
     public function setNome($nome){
 		$this->nome = $nome;
@@ -82,7 +82,7 @@ class Criminoso{
 		$this->dataNasc = $dataNasc;
 	}
     public function setSexo($sexo){
-        $this->sexo($sexo);
+        $this->sexo = $sexo;
     }
 	public function setSentenca($sentenca){
 		$this->sentenca = $sentenca;
@@ -100,12 +100,13 @@ class Criminoso{
     public function setResultadoPost($resultadoPost){
     	$this->resultadoPost = $resultadoPost;
     }
+    public function setConexao($conexao){
+        $this->conexao = $conexao;
+    }
     //Métodos
-    public function cadastrarCriminoso($conexao){
+    public function cadastrarCriminoso(){
+        $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
-    	echo "<pre>";
-    	#print_r($conexao->getInsertBuilder());
-    	#die();
     	$conexao->execInsert();
     	if($conexao->getErro()){
     		

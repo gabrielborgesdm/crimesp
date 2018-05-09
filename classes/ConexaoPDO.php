@@ -8,6 +8,7 @@ class ConexaoPDO {
     private $user;
     private $password;
     private $insertBuilder;
+    private $selectBuilder;
     private $sql;
     private $pdo;
     private $query;
@@ -58,7 +59,12 @@ class ConexaoPDO {
     public function getErro() {
         return $this->erro;
     }
-
+    public function getInsertBuilder() {
+        return $this->insertBuilder;
+    }
+    public function getSelectBuilder() {
+        return $this->insertBuilder;
+    }
     public function setHost($host) {
         $this->host = $host;
     }
@@ -98,10 +104,6 @@ class ConexaoPDO {
 
     public function setErro($erro) {
         $this->erro = $erro;
-    }
-
-    public function getInsertBuilder() {
-        return $this->insertBuilder;
     }
 
     //Métodos
@@ -159,6 +161,30 @@ class ConexaoPDO {
         $this->insertBuilder = $insertBuilder;
     }
 
+    public function setSelectBuilder($tabela, $resultado, $where) {
+        $selectBuilder = "SELECT ";
+        $tamanho = count($resultado);
+        $i = 0;
+
+        foreach ($resultado as $key => $value) {
+            $i++;
+            $selectBuilder .= "$key";
+            if ($i < $tamanho) {
+                $selectBuilder .= ", ";
+            }
+            else {
+                $selectBuilder .= " FROM ";
+            }
+        }
+
+        $selectBuilder .= "$tabela ";
+        if($where != 0){
+            $selectBuilder .= "WHERE $where['key'] = $where['value']";
+        }
+
+        
+        $this->$selectBuilder = $selectBuilderr;
+    }
     #Executa a query
 
     public function execInsert() {

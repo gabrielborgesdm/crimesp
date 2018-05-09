@@ -1,6 +1,4 @@
 <?php
-
-require_once 'init.php';
 require_once'classes/Delito.php';
 
 $retorno = Array();
@@ -38,4 +36,4 @@ else{
 }
 
 $delitos = new Delito($resultado);
-$delitos->cadastrarDelitos($conexao);
+$delitos->cadastrarDelitos();

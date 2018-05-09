@@ -4,7 +4,7 @@
         <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
             <h1 class="text-center mt-4 ">Cadastro de vítimas</h1>
             <div class="col-12 mx-auto">
-                <form method="post" id="formCriminosos" action="processaVitimas.php">
+                <form method="post" id="formVitimas" action="processaVitimas.php">
                     <div class="form-group py-3">
                         <label for="nome">Nome completo*</label>
                         <input type="text" class="form-control" name="nome" id="nome" required />
