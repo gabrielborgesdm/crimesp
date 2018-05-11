@@ -2,9 +2,9 @@
 function configDB(){
 	$dbSettings = Array(
 	"host" => "localhost",
-	"dbname" => "crimesp",
+	"name" => "crimesp",
 	"user" => "root",
-	"password" => "root"
+	"password" => ""
 	);
 	return $dbSettings;
 }

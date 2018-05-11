@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 09, 2018 at 03:34 AM
+-- Generation Time: May 11, 2018 at 02:29 PM
 -- Server version: 5.7.21
 -- PHP Version: 5.6.35
 
@@ -21,6 +21,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `crimesp`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `crime`
+--
+
+DROP TABLE IF EXISTS `crime`;
+CREATE TABLE IF NOT EXISTS `crime` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(200) COLLATE utf8_bin NOT NULL,
+  `local` varchar(150) COLLATE utf8_bin NOT NULL,
+  `dataCrime` date NOT NULL,
+  `criminoso` int(11) NOT NULL,
+  `vitima` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 

@@ -1,5 +1,4 @@
 <?php
-include('configDB.php');
 require_once'classes\ConexaoPDO.php';
 class Criminoso{
 	//Atributos
@@ -9,8 +8,7 @@ class Criminoso{
 
     //Métodos Especiais
     public function __construct($resultado) {
-        $db = configDB();
-        $conexao = new ConexaoPDO($db['host'], $db['dbname'] .";charset=utf8", $db['user'], $db['password']);
+        $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
         $this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);
@@ -114,6 +112,19 @@ class Criminoso{
     	}
     	else{
     		echo "foi";
+    	}
+    }
+    public function listarCriminoso(){
+        $conexao = $this->getConexao();
+        $conexao->setSelectBuilder("criminoso", $this->getResultadoPost(), 0); 
+    	$conexao->execSelect();
+    	if($conexao->getErro()){
+    		
+    		echo $conexao->getErro();
+    	}
+    	else{
+            echo"<pre>";
+    		print_r($conexao->getLinha());
     	}
     }
 }

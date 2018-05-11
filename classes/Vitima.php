@@ -1,5 +1,4 @@
 <?php
-include('configDB.php');
 require_once'classes\ConexaoPDO.php';
 class Vitima{
 	//Atributos
@@ -8,8 +7,7 @@ class Vitima{
 
     //Métodos Especiais
     public function __construct($resultado) {
-        $db = configDB();
-        $conexao = new ConexaoPDO($db['host'], $db['dbname'] .";charset=utf8", $db['user'], $db['password']);
+        $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
   		$this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);

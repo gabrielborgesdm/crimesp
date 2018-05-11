@@ -1,5 +1,5 @@
 <?php
-
+include 'configDB.php';
 class ConexaoPDO {
 
     //Atributos
@@ -11,16 +11,17 @@ class ConexaoPDO {
     private $selectBuilder;
     private $sql;
     private $pdo;
-    private $query;
     private $linha;
+    private $query;
     private $erro;
 
     //Métodos especiais
-    public function __construct($host, $dbName, $user, $password) {
-        $this->setHost($host);
-        $this->setDbname($dbName);
-        $this->setUser($user);
-        $this->setPassword($password);
+    public function __construct() {
+        $db = configDB();
+        $this->setHost($db['host']);
+        $this->setDbname($db['name']);
+        $this->setUser($db['user']);
+        $this->setPassword($db['password']);
         $this->conectarBanco();
     }
 
@@ -48,12 +49,11 @@ class ConexaoPDO {
         return $this->pdo;
     }
 
-    public function getQuery() {
-        return $this->query;
-    }
-
     public function getLinha() {
         return $this->linha;
+    }
+    public function getQuery() {
+        return $this->query;
     }
 
     public function getErro() {
@@ -63,7 +63,7 @@ class ConexaoPDO {
         return $this->insertBuilder;
     }
     public function getSelectBuilder() {
-        return $this->insertBuilder;
+        return $this->selectBuilder;
     }
     public function setHost($host) {
         $this->host = $host;
@@ -90,10 +90,6 @@ class ConexaoPDO {
         $this->pdo = $pdo;
     }
 
-    public function setQuery($query) {
-        $this->query = $query;
-    }
-
     public function setOperacao($operacao) {
         $this->operacao = $operacao;
     }
@@ -101,7 +97,11 @@ class ConexaoPDO {
     public function setLinha($linha) {
         $this->linha = $linha;
     }
-
+    
+    public function setQuery($query){
+        $this->query = $query;
+    }
+    
     public function setErro($erro) {
         $this->erro = $erro;
     }
@@ -145,10 +145,10 @@ class ConexaoPDO {
             }
             else if (is_array($value)) {
                 $array = json_encode($value);
-                $insertBuilder .= "'" . $array . "'";
+                $insertBuilder .= '"' . $array . '"';
             }
             else {
-                $insertBuilder .= "'$value'";
+                $insertBuilder .= '"'.$value.'"';
             }
 
             if ($i < $tamanho) {
@@ -165,25 +165,30 @@ class ConexaoPDO {
         $selectBuilder = "SELECT ";
         $tamanho = count($resultado);
         $i = 0;
-
-        foreach ($resultado as $key => $value) {
-            $i++;
-            $selectBuilder .= "$key";
-            if ($i < $tamanho) {
-                $selectBuilder .= ", ";
-            }
-            else {
-                $selectBuilder .= " FROM ";
-            }
+        if(is_array($resultado)){
+           foreach ($resultado as $key) {
+                $i++;
+                $selectBuilder .= "$key";
+                if ($i < $tamanho) {
+                    $selectBuilder .= ", ";
+                }
+                else {
+                    $selectBuilder .= " FROM ";
+                }
+            } 
         }
+        else{
+            $selectBuilder .= "$resultado FROM ";
+        }
+        
 
-        $selectBuilder .= "$tabela ";
+        $selectBuilder .= $tabela;
         if($where != 0){
-            $selectBuilder .= "WHERE $where['key'] = $where['value']";
+            $selectBuilder .= " WHERE " . $where['key'] . " = " .$where['value'];
         }
 
         
-        $this->$selectBuilder = $selectBuilderr;
+        $this->selectBuilder = $selectBuilder;
     }
     #Executa a query
 
@@ -194,6 +199,18 @@ class ConexaoPDO {
         } catch (PDOException $e) {
             $this->setErro($e);
         }
+    }
+    public function execSelect() {
+        try {
+            $pdo = $this->getPdo();
+            $query = $pdo->prepare($this->getSelectBuilder());
+            $query->execute();
+        } catch (PDOException $e) {
+            $this->setErro($e);        
+        }
+        
+        $this->setQuery($query);
+        
     }
 
 }
