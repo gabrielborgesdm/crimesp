@@ -46,5 +46,6 @@ else{
     $retorno["mensagem"] = 4;
     die("alo");
 }
-$criminoso = new Criminoso($resultado);
+$criminoso = new Criminoso();
+$criminoso->recebeDados($resultado);
 $criminoso->cadastrarCriminoso();

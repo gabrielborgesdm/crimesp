@@ -2,7 +2,7 @@
 require_once'classes\ConexaoPDO.php';
 class Crime{
 	//Atributos
-	private $descricao, $id, $local, $dataCrime, $criminoso, $vitima; 
+	private $descricao, $id, $local, $dataCrime, $criminoso, $vitima, $delito; 
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
@@ -35,7 +35,10 @@ class Crime{
 		return $this->criminoso;	
 	}
 	public function getVitima(){
-		return $this->vitima;	
+        return $this->vitima;   
+    }
+    public function getDelito(){
+		return $this->delito;	
 	}
     public function getResultadoPost(){
     	return $this->resultadoPost;
@@ -59,7 +62,10 @@ class Crime{
         $this->criminoso = $criminoso;
     }
 	public function setVitima($vitima){
-		$this->vitima = $vitima;
+        $this->vitima = $vitima;
+    }
+    public function setDelito($delito){
+		$this->delito = $delito;
 	}
     public function setResultadoPost($resultadoPost){
     	$this->resultadoPost = $resultadoPost;
@@ -78,7 +84,7 @@ class Crime{
     		echo $conexao->getErro();
     	}
     	else{
-    		echo "foi";
+    		include('formSucesso.php');
     	}
     }
 }

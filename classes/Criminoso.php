@@ -7,31 +7,9 @@ class Criminoso{
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
-    public function __construct($resultado) {
+    public function __construct(){
         $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
-        $this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDataNasc($resultado["dataNasc"]);
-        $this->setSexo($resultado["sexo"]);
-        $this->setSentenca($resultado["sentenca"]);
-        
-        if(!empty($resultado["dataExec"])){
-        	$this->setDataExec($resultado["dataExec"]);
-        }
-
-        if(!empty($resultado["tempoCadeia"])){
-        	$this->setTempoCadeia($resultado["tempoCadeia"]);     	
-        }
-
-        if(!empty($resultado["endereco"])){
-        	$this->setEndereco($resultado["endereco"]);
-    	}
-
-        if(!empty($resultado["cpf"])){
-        	$this->setCpf($resultado["cpf"]);
-        }			
-        
     }
 
     public function getNome(){
@@ -102,6 +80,32 @@ class Criminoso{
         $this->conexao = $conexao;
     }
     //Métodos
+    public function recebeDados($resultado) {
+       
+        $this->setResultadoPost($resultado);
+        $this->setNome($resultado["nome"]);
+        $this->setDataNasc($resultado["dataNasc"]);
+        $this->setSexo($resultado["sexo"]);
+        $this->setSentenca($resultado["sentenca"]);
+        
+        if(!empty($resultado["dataExec"])){
+            $this->setDataExec($resultado["dataExec"]);
+        }
+
+        if(!empty($resultado["tempoCadeia"])){
+            $this->setTempoCadeia($resultado["tempoCadeia"]);       
+        }
+
+        if(!empty($resultado["endereco"])){
+            $this->setEndereco($resultado["endereco"]);
+        }
+
+        if(!empty($resultado["cpf"])){
+            $this->setCpf($resultado["cpf"]);
+        }           
+        
+    }
+    
     public function cadastrarCriminoso(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
@@ -111,7 +115,7 @@ class Criminoso{
     		echo $conexao->getErro();
     	}
     	else{
-    		echo "foi";
+    		include('formSucesso.php');
     	}
     }
     public function listarCriminoso(){

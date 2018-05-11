@@ -6,22 +6,11 @@ class Vitima{
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
-    public function __construct($resultado) {
+    public function __construct(){
         $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
-  		$this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDataNasc($resultado["dataNasc"]);
-        $this->setSexo($resultado["sexo"]);
-        
-        if(!empty($resultado["endereco"])){
-        	$this->setEndereco($resultado["endereco"]);
-    	}
-
-        if(!empty($resultado["cpf"])){
-        	$this->setCpf($resultado["cpf"]);
-        }			        
     }
+    
     public function getNome(){
 		return $this->nome;	
 	}
@@ -71,10 +60,26 @@ class Vitima{
         $this->conexao = $conexao;
     }
     //Métodos
+    public function recebeDados($resultado) {
+        $conexao = new ConexaoPDO();
+        $this->setConexao($conexao);
+        $this->setResultadoPost($resultado);
+        $this->setNome($resultado["nome"]);
+        $this->setDataNasc($resultado["dataNasc"]);
+        $this->setSexo($resultado["sexo"]);
+        
+        if(!empty($resultado["endereco"])){
+            $this->setEndereco($resultado["endereco"]);
+        }
+
+        if(!empty($resultado["cpf"])){
+            $this->setCpf($resultado["cpf"]);
+        }                   
+    }
     public function cadastrarVitima(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("vitima", $this->getResultadoPost());
-    	echo "<pre>";
+    	#echo "<pre>";
     	#print_r($conexao->getInsertBuilder());
     	#die();
     	$conexao->execInsert();
@@ -82,7 +87,7 @@ class Vitima{
     		echo $conexao->getErro();
     	}
     	else{
-    		echo "foi";
+    		include('formSucesso.php');
     	}
     }
 }

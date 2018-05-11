@@ -11,5 +11,6 @@ $loc = "Location: formVitimas.php";
 (empty($_POST["cpf"])) ?: $resultado["cpf"] = intval($_POST["cpf"]);
 (empty($_POST["sexo"])) ?: $resultado["sexo"] = $_POST["sexo"];
 
-$vitima = new Vitima($resultado);
+$vitima = new Vitima();
+$vitimas->recebeDados($resultado);
 $vitima->cadastrarVitima();

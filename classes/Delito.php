@@ -1,5 +1,4 @@
 <?php
-include('configDB.php');
 require_once'classes\ConexaoPDO.php';
 class Delito{
 	//Atributos
@@ -8,18 +7,11 @@ class Delito{
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
-    public function __construct($resultado) {
-        $db = configDB();
-        $conexao = new ConexaoPDO($db['host'], $db['dbname'] .";charset=utf8", $db['user'], $db['password']);
+    public function __construct(){
+        $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
-  		$this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDescricao($resultado["descricao"]);
-        $this->setSentenca($resultado["sentenca"]);
-        if(!empty($resultado["tempoCadeia"])){
-        	$this->setTempoCadeia($resultado["tempoCadeia"]);     	
-        }
     }
+    
     public function getNome(){
 		return $this->nome;	
 	}
@@ -64,6 +56,19 @@ class Delito{
         $this->conexao = $conexao;
     }
     //Métodos
+    public function recebeDados($resultado) {
+        $db = configDB();
+        $conexao = new ConexaoPDO();
+        $this->setConexao($conexao);
+        $this->setResultadoPost($resultado);
+        $this->setNome($resultado["nome"]);
+        $this->setDescricao($resultado["descricao"]);
+        $this->setSentenca($resultado["sentenca"]);
+        if(!empty($resultado["tempoCadeia"])){
+            $this->setTempoCadeia($resultado["tempoCadeia"]);       
+        }
+    }
+    
     public function cadastrarDelitos(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("delito", $this->getResultadoPost());
@@ -76,7 +81,7 @@ class Delito{
     		echo $conexao->getErro();
     	}
     	else{
-    		echo "foi";
+    		include('formSucesso.php');
     	}
     }
 }

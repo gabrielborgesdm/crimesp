@@ -20,17 +20,43 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" href="index.php">Início</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="formCriminosos.php">Criminosos</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropCriminosos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Criminosos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropCriminosos">
+                            <a class="dropdown-item" href="formCriminosos.php">Cadastro</a>
+                            <a class="dropdown-item" href="listarCriminosos.php">Visualização</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="formVitimas.php">Vítimas</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropVitimas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Vitimas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropVitimas">
+                            <a class="dropdown-item" href="formVitimas.php">Cadastro</a>
+                            <a class="dropdown-item" href="listarVitimas.php">Visualização</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="formCrimes.php">Crimes</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropDelitos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Delitos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropDelitos">
+                            <a class="dropdown-item" href="formDelitos.php">Cadastro</a>
+                            <a class="dropdown-item" href="listarDelitos.php">Visualização</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="formDelitos.php">Delitos</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="dropCrimes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Crimes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropCrimes">
+                            <a class="dropdown-item" href="formCrimes.php">Cadastro</a>
+                            <a class="dropdown-item" href="listarCrimess.php">Visualização</a>
+                        </div>
                     </li>
                 </ul>          
             </div>

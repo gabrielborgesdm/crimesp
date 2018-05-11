@@ -2,12 +2,8 @@
 include 'header.php';
 include 'classes/ConexaoPDO.php';
 $crim = new ConexaoPDO();
-$vitm = new ConexaoPDO();
-$deli = new ConexaoPDO();
 
 $crim->setSelectBuilder("criminoso", "*", 0);
-$vitm->setSelectBuilder("vitima", "*", 0);
-$deli->setSelectBuilder("delito", "*", 0);
 
 $crim->execSelect();
 $vitm->execSelect();

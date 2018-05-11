@@ -141,11 +141,11 @@ class ConexaoPDO {
         foreach ($resultado as $key => $value) {
             $i++;
             if (is_int($value) or is_double($value)) {
-                $insertBuilder .= "$value";
+                $insertBuilder .= $value;
             }
             else if (is_array($value)) {
                 $array = json_encode($value);
-                $insertBuilder .= '"' . $array . '"';
+                $insertBuilder .= "'" . $array . "'";
             }
             else {
                 $insertBuilder .= '"'.$value.'"';

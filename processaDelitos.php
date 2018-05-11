@@ -35,5 +35,6 @@ else{
     die("alo");
 }
 
-$delitos = new Delito($resultado);
+$delitos = new Delito();
+$delitos->recebeDados($resultado);
 $delitos->cadastrarDelitos();
