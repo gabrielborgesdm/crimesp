@@ -6,19 +6,10 @@ class Crime{
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
-    public function __construct($resultado) {
-        $db = configDB();
+    public function __construct(){
         $conexao = new ConexaoPDO();
-        $this->setDescricao($resultado["descricao"]);
-        $this->setLocal($resultado["local"]);
-        $this->setDataCrime($resultado["dataCrime"]);
-		$this->setCriminoso($resultado["criminoso"]);
-        $this->setVitima($resultado["vitima"]);
         $this->setConexao($conexao);
-        $this->setResultadoPost($resultado);
-        
     }
-
     public function getDescricao(){
 		return $this->descricao;	
 	}
@@ -75,6 +66,17 @@ class Crime{
     }
 	
     //Métodos
+     public function recebeDados($resultado) {
+        $conexao = $this->getConexao();
+        $this->setDescricao($resultado["descricao"]);
+        $this->setLocal($resultado["local"]);
+        $this->setDataCrime($resultado["dataCrime"]);
+		$this->setCriminoso($resultado["criminoso"]);
+        $this->setVitima($resultado["vitima"]);
+        $this->setConexao($conexao);
+        $this->setResultadoPost($resultado);
+    }
+    
     public function cadastrarCrime(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("crime", $this->getResultadoPost());
@@ -85,6 +87,17 @@ class Crime{
     	}
     	else{
     		include('formSucesso.php');
+    	}
+    }
+    public function listarCrime(){
+        $conexao = $this->getConexao();
+        $conexao->setSelectBuilder("infocrime", "*" , 0); 
+    	$conexao->execSelect();
+    	if($conexao->getErro()){
+    		echo $conexao->getErro();
+    	}
+    	else{
+    		return $conexao->getQuery();
     	}
     }
 }

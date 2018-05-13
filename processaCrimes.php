@@ -13,5 +13,6 @@ $loc = "Location: formCrimes.php";
 (empty($_POST["delito"])) ? header($loc): $resultado["delito"] = $_POST["delito"];
 
 
-$crime = new Crime($resultado);
+$crime = new Crime();
+$crime->recebeDados($resultado);
 $crime->cadastrarCrime();

@@ -10,18 +10,18 @@
     </head>
     <body class="bg-secondary">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
-            <a class="navbar-brand" href="#">CRIMESP</a>
+            <a class="navbar-brand" href="index.php">CRIMESP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarList" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarList">
-                <ul class="navbar-nav ml-auto px-2">
-                    <li class="nav-item">
+                <ul class="navbar-nav ml-auto px-2 pr-5">
+                    <li class="nav-item px-1">
                         <a class="nav-link text-light" href="index.php">Início</a>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown px-1">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="dropCriminosos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Criminosos
                         </a>
@@ -31,7 +31,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown px-1">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="dropVitimas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Vitimas
                         </a>
@@ -40,7 +40,7 @@
                             <a class="dropdown-item" href="listarVitimas.php">Visualização</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown px-1">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="dropDelitos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Delitos
                         </a>
@@ -49,13 +49,13 @@
                             <a class="dropdown-item" href="listarDelitos.php">Visualização</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown px-1">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="dropCrimes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Crimes
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropCrimes">
                             <a class="dropdown-item" href="formCrimes.php">Cadastro</a>
-                            <a class="dropdown-item" href="listarCrimess.php">Visualização</a>
+                            <a class="dropdown-item" href="listarCrimes.php">Visualização</a>
                         </div>
                     </li>
                 </ul>          

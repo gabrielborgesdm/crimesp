@@ -40,15 +40,15 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
                                 <textarea name="descricao" id="descricao" required="required" class="form-control" rows="3" style="resize: none;"></textarea>
                             </div>
                             <div class="form-group py-3">
-                                <label for="local">Local de ocorrência</label>
+                                <label for="local">Local de ocorrência*</label>
                                 <input type="text" class="form-control" name="local" id="local" required />
                             </div>
                             <div class="form-group py-3">
-                                <label for="dataCrime">Data de ocorrência</label>
+                                <label for="dataCrime">Data de ocorrência*</label>
                                 <input type="date" class="form-control" name="dataCrime" id="dataCrime" required />
                             </div>
                             <div class="form-group py-3">
-                                <label>Criminoso</label>
+                                <label>Criminoso*</label>
                                 <select class="form-control" name="criminoso">';
 											
   
@@ -63,7 +63,7 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
                             </div>
 							
 							<div class="form-group py-3">
-                                <label>Vítima</label>
+                                <label>Vítima*</label>
                                 <select class="form-control" name="vitima">';
 											
   
@@ -78,7 +78,7 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
 							</div>
 
                             <div class="form-group py-3">
-                                <label>Delito praticado</label>
+                                <label>Delito praticado*</label>
                                 <select class="form-control" name="delito">';
                                             
   

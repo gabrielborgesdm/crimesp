@@ -12,5 +12,5 @@ $loc = "Location: formVitimas.php";
 (empty($_POST["sexo"])) ?: $resultado["sexo"] = $_POST["sexo"];
 
 $vitima = new Vitima();
-$vitimas->recebeDados($resultado);
+$vitima->recebeDados($resultado);
 $vitima->cadastrarVitima();

@@ -3,7 +3,6 @@ require_once'classes\ConexaoPDO.php';
 class Delito{
 	//Atributos
 	private $nome, $id, $descricao;
-	private $sentenca, $tempoCadeia;
 	private $resultadoPost, $conexao;
 
     //Métodos Especiais
@@ -11,18 +10,11 @@ class Delito{
         $conexao = new ConexaoPDO();
         $this->setConexao($conexao);
     }
-    
-    public function getNome(){
-		return $this->nome;	
-	}
     public function getId(){
 		return $this->id;	
 	}
-	public function getSentenca(){
-		return $this->sentenca;	
-	}
-	public function getTempoCadeia(){
-		return $this->tempoCadeia;	
+    public function getNome(){
+		return $this->nome;	
 	}
     public function getDescricao() {
         return $this->descricao;
@@ -33,18 +25,11 @@ class Delito{
     public function getConexao(){
         return $this->conexao;
     }
-    public function setNome($nome){
-		$this->nome = $nome;
-	}
     public function setId($id){
 		$this->id = $id;
 	}
-	public function setSentenca($sentenca){
-		$this->sentenca = $sentenca;
-	}
-	public function setTempoCadeia($tempoCadeia){
-	
-        $this->tempoCadeia = json_encode($tempoCadeia);   
+    public function setNome($nome){
+		$this->nome = $nome;
 	}
     public function setResultadoPost($resultadoPost){
     	$this->resultadoPost = $resultadoPost;
@@ -63,18 +48,11 @@ class Delito{
         $this->setResultadoPost($resultado);
         $this->setNome($resultado["nome"]);
         $this->setDescricao($resultado["descricao"]);
-        $this->setSentenca($resultado["sentenca"]);
-        if(!empty($resultado["tempoCadeia"])){
-            $this->setTempoCadeia($resultado["tempoCadeia"]);       
-        }
     }
     
     public function cadastrarDelitos(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("delito", $this->getResultadoPost());
-    	echo "<pre>";
-    	#print_r($conexao->getInsertBuilder());
-    	#die();
     	$conexao->execInsert();
     	if($conexao->getErro()){
     		
@@ -82,6 +60,17 @@ class Delito{
     	}
     	else{
     		include('formSucesso.php');
+    	}
+    }
+    public function listarDelitos(){
+        $conexao = $this->getConexao();
+        $conexao->setSelectBuilder("delito", "*" , 0); 
+    	$conexao->execSelect();
+    	if($conexao->getErro()){
+    		echo $conexao->getErro();
+    	}
+    	else{
+    		return $conexao->getQuery();
     	}
     }
 }

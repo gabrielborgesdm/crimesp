@@ -120,15 +120,14 @@ class Criminoso{
     }
     public function listarCriminoso(){
         $conexao = $this->getConexao();
-        $conexao->setSelectBuilder("criminoso", $this->getResultadoPost(), 0); 
+        $conexao->setSelectBuilder("criminoso", "*" , 0); 
     	$conexao->execSelect();
     	if($conexao->getErro()){
-    		
     		echo $conexao->getErro();
     	}
     	else{
-            echo"<pre>";
-    		print_r($conexao->getLinha());
+    		return $conexao->getQuery();
     	}
     }
+    
 }

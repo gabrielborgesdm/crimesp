@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Cabin|Exo+2');
+
 @media screen and (max-width: 991px) {
     .nav-item{
         padding-top:0.8rem;
@@ -9,14 +10,14 @@
     }
 }
 .navbar-brand{
-    font-family:'Roboto', 'Sans-serif';
+    
     font-size:2.0rem;
 }
 .nav-item .nav-link{
    font-size:1.2rem;
 }
 body{
-    font-family:'Roboto', 'Sans-serif' !important;
+    font-family: 'Exo 2', sans-serif;
     font-size: 1.2rem;
 }
 .divForm{
@@ -27,6 +28,6 @@ body{
 }
 
 #footer{
-    opacity: 0.97;
     font-size: 1.0rem;
 }
+

@@ -90,4 +90,15 @@ class Vitima{
     		include('formSucesso.php');
     	}
     }
+    public function listarVitima(){
+        $conexao = $this->getConexao();
+        $conexao->setSelectBuilder("vitima", "*" , 0); 
+    	$conexao->execSelect();
+    	if($conexao->getErro()){
+    		echo $conexao->getErro();
+    	}
+    	else{
+    		return $conexao->getQuery();
+    	}
+    }
 }
