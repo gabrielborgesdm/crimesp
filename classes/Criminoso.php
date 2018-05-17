@@ -108,6 +108,7 @@ class Criminoso{
     
     public function cadastrarCriminoso(){
         $conexao = $this->getConexao();
+		$conexao = new Insert();
     	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
     	$conexao->execInsert();
     	if($conexao->getErro()){
@@ -118,12 +119,18 @@ class Criminoso{
     		include('formSucesso.php');
     	}
     }
-    public function listarCriminoso(){
+    public function listarCriminoso($campos = null, $where = null){
         $conexao = $this->getConexao();
-        $conexao->setSelectBuilder("criminoso", "*" , 0); 
+        if(is_null($campos) and is_null($where)){
+            $conexao->setSelectBuilder("criminoso");    
+        }else if(is_null($where)) {
+            $conexao->setSelectBuilder("criminoso", $campos);
+        }else{
+            $conexao->setSelectBuilder("criminoso", $campos, $where);
+        }
     	$conexao->execSelect();
     	if($conexao->getErro()){
-    		echo $conexao->getErro();
+    		return 'Erro';                    #ARRUMAR ISSO EM TODAS AS CLASSES
     	}
     	else{
     		return $conexao->getQuery();

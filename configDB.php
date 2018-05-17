@@ -4,7 +4,7 @@ function configDB(){
 	"host" => "localhost",
 	"name" => "crimesp",
 	"user" => "root",
-	"password" => ""
+	"password" => "root"
 	);
 	return $dbSettings;
 }

@@ -118,6 +118,68 @@ class ConexaoPDO {
         $this->setPDO($pdo);
     }
 
+    //Apenas nome da tabela
+    public function setSelectBuilder($tabela, $campos = null, $where = null) {
+        if(is_null($campos) and is_null($where)){
+            $selectBuilder = "SELECT * FROM $tabela";
+        }else if(is_null($where)){
+            $selectBuilder = "SELECT ";
+            
+            if(is_array($campos)){
+                $tamanho = count($campos);
+                $i = 0;
+                
+                foreach ($campos as $key) {
+                    $i++;
+                    $selectBuilder .= "$key";
+                    if ($i < $tamanho) {
+                        $selectBuilder .= ", ";
+                    }else {
+                        $selectBuilder .= " FROM ";
+                    }
+                } 
+            }else{
+                $selectBuilder .= "$campos FROM ";
+            }
+
+            $selectBuilder .= "$tabela;";
+        }else{
+            $selectBuilder = "SELECT ";
+            if(is_array($campos)){
+                $tamanho = count($campos);
+                $i = 0;
+                foreach ($campos as $key) {
+                    $i++;
+                    $selectBuilder .= "$key";
+                    if ($i < $tamanho) {
+                        $selectBuilder .= ", ";
+                    }else {
+                        $selectBuilder .= " FROM ";
+                    }
+                } 
+            }else{
+                $selectBuilder .= "$campos FROM ";
+            }
+            $selectBuilder .= "$tabela  WHERE " . $where['key'] . " = " .$where['value'];
+        }
+        $this->selectBuilder = $selectBuilder;   
+    }
+
+    public function execSelect() {
+        try {
+            $pdo = $this->getPdo();
+            $query = $pdo->prepare($this->getSelectBuilder());
+            $query->execute();
+        } catch (PDOException $e) {
+            $this->setErro($e);        
+        }
+        
+        $this->setQuery($query);
+        
+    }
+
+    //Insert
+
     public function setInsertBuilder($tabela, $resultado) {
         $insertBuilder = "INSERT INTO $tabela(";
         $tamanho = count($resultado);
@@ -160,38 +222,7 @@ class ConexaoPDO {
         }
         $this->insertBuilder = $insertBuilder;
     }
-
-    public function setSelectBuilder($tabela, $resultado, $where) {
-        $selectBuilder = "SELECT ";
-        $tamanho = count($resultado);
-        $i = 0;
-        if(is_array($resultado)){
-           foreach ($resultado as $key) {
-                $i++;
-                $selectBuilder .= "$key";
-                if ($i < $tamanho) {
-                    $selectBuilder .= ", ";
-                }
-                else {
-                    $selectBuilder .= " FROM ";
-                }
-            } 
-        }
-        else{
-            $selectBuilder .= "$resultado FROM ";
-        }
-        
-
-        $selectBuilder .= $tabela;
-        if($where != 0){
-            $selectBuilder .= " WHERE " . $where['key'] . " = " .$where['value'];
-        }
-
-        
-        $this->selectBuilder = $selectBuilder;
-    }
-    #Executa a query
-
+    
     public function execInsert() {
         try {
             $pdo = $this->getPdo();
@@ -200,17 +231,6 @@ class ConexaoPDO {
             $this->setErro($e);
         }
     }
-    public function execSelect() {
-        try {
-            $pdo = $this->getPdo();
-            $query = $pdo->prepare($this->getSelectBuilder());
-            $query->execute();
-        } catch (PDOException $e) {
-            $this->setErro($e);        
-        }
-        
-        $this->setQuery($query);
-        
-    }
+    
 
 }

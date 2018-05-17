@@ -4,6 +4,8 @@ require_once 'classes/Criminoso.php';
 
 $crim = new Criminoso();
 $query = $crim->listarCriminoso();
+print_r($query);
+die();
 if($crim->getConexao()->getErro()){
     header("Location:index.php");
 }else{
@@ -47,7 +49,9 @@ if($countCrim > 0){
         }
         
         if(isset($linha['tempoCadeia'])){
-            $cadeia = json_decode($linha['tempoCadeia']);       
+            $cadeia = json_decode($linha['tempoCadeia']);
+            
+
             $linha['tempoCadeia'] = $cadeia->anos . ' anos, ' .
                                     $cadeia->meses . ' meses e ' .
                                     $cadeia->dias . ' dias' ;

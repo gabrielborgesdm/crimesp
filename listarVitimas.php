@@ -4,6 +4,8 @@ require_once 'classes/Vitima.php';
 
 $vitm = new Vitima();
 $query = $vitm->listarVitima();
+print_r($query);
+die();
 if($vitm->getConexao()->getErro()){
     header("Location:index.php");
 }else{
