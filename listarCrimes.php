@@ -4,6 +4,7 @@ require_once 'classes/Crime.php';
 
 $crim = new Crime();
 $query = $crim->listarCrime();
+
 if($crim->getConexao()->getErro()){
     header("Location:index.php");
 }else{

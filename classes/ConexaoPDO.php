@@ -119,48 +119,38 @@ class ConexaoPDO {
     }
 
     //Apenas nome da tabela
-    public function setSelectBuilder($tabela, $campos = null, $where = null) {
-        if(is_null($campos) and is_null($where)){
+    public function setSelectBuilder($result) {
+        $tabela = $result[0]; 
+        $campos = $result[1];
+        $where = $result[2];
+        
+        if (is_null($campos)) {
             $selectBuilder = "SELECT * FROM $tabela";
-        }else if(is_null($where)){
+        }else {
             $selectBuilder = "SELECT ";
-            
-            if(is_array($campos)){
+            if (is_array($campos)) {
                 $tamanho = count($campos);
                 $i = 0;
-                
                 foreach ($campos as $key) {
                     $i++;
                     $selectBuilder .= "$key";
+                    
                     if ($i < $tamanho) {
                         $selectBuilder .= ", ";
                     }else {
-                        $selectBuilder .= " FROM ";
+                        $selectBuilder .= " FROM $tabela";
                     }
-                } 
-            }else{
-                $selectBuilder .= "$campos FROM ";
+                }
+            }else {
+                $selectBuilder .= "$campos FROM $tabela";
             }
+        }
 
-            $selectBuilder .= "$tabela;";
+        if(!is_null($where)){
+           
+            $selectBuilder .= " WHERE " . $where[0] . " = " .$where[1] . " ;";
         }else{
-            $selectBuilder = "SELECT ";
-            if(is_array($campos)){
-                $tamanho = count($campos);
-                $i = 0;
-                foreach ($campos as $key) {
-                    $i++;
-                    $selectBuilder .= "$key";
-                    if ($i < $tamanho) {
-                        $selectBuilder .= ", ";
-                    }else {
-                        $selectBuilder .= " FROM ";
-                    }
-                } 
-            }else{
-                $selectBuilder .= "$campos FROM ";
-            }
-            $selectBuilder .= "$tabela  WHERE " . $where['key'] . " = " .$where['value'];
+            $selectBuilder .= " ;";
         }
         $this->selectBuilder = $selectBuilder;   
     }

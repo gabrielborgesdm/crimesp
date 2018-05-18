@@ -121,16 +121,26 @@ class Criminoso{
     }
     public function listarCriminoso($campos = null, $where = null){
         $conexao = $this->getConexao();
-        if(is_null($campos) and is_null($where)){
-            $conexao->setSelectBuilder("criminoso");    
-        }else if(is_null($where)) {
-            $conexao->setSelectBuilder("criminoso", $campos);
+        $result = Array();
+        $result[0] = "criminoso"; 
+        
+        if(!is_null($campos)){
+            $result[1] = $campos; 
         }else{
-            $conexao->setSelectBuilder("criminoso", $campos, $where);
+            $result[1] = null;
         }
+        
+        if(!is_null($where)){
+            $result[2] = $where; 
+        }else{
+            $result[2] = null;
+        }
+        
+        $conexao->setSelectBuilder($result);      
     	$conexao->execSelect();
+        
     	if($conexao->getErro()){
-    		return 'Erro';                    #ARRUMAR ISSO EM TODAS AS CLASSES
+    		return 1;                    #ARRUMAR ISSO EM TODAS AS CLASSES
     	}
     	else{
     		return $conexao->getQuery();

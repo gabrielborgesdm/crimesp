@@ -4,8 +4,7 @@ require_once 'classes/Criminoso.php';
 
 $crim = new Criminoso();
 $query = $crim->listarCriminoso();
-print_r($query);
-die();
+
 if($crim->getConexao()->getErro()){
     header("Location:index.php");
 }else{
@@ -36,6 +35,7 @@ if($countCrim > 0){
     $html = "";
     
     while($linha = $query->fetch(PDO::FETCH_ASSOC)){
+        
         (isset($linha['endereco'])) ?: $linha['endereco'] = "Nulo";
         (isset($linha['cpf'])) ?: $linha['cpf'] = "Nulo";
         (isset($linha['dataExec'])) ?: $linha['dataExec'] = "Nulo";

@@ -3,7 +3,7 @@ include 'header.php';
 require_once 'classes/Delito.php';
 
 $vitm = new Delito();
-$query = $vitm->listarDelitos();
+$query = $vitm->listarDelito();
 if($vitm->getConexao()->getErro()){
     header("Location:index.php");
 }else{
