@@ -53,9 +53,7 @@ class Delito{
     public function cadastrarDelitos(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("delito", $this->getResultadoPost());
-    	$conexao->execInsert();
     	if($conexao->getErro()){
-    		
     		echo $conexao->getErro();
     	}
     	else{
@@ -64,29 +62,17 @@ class Delito{
     }
     public function listarDelito($campos = null, $where = null){
         $conexao = $this->getConexao();
-        $result = Array();
-        $result[0] = "delito"; 
-        
-        if(!is_null($campos)){
-            $result[1] = $campos; 
-        }else{
-            $result[1] = null;
+        $tabela = "delito"; 
+        if(is_null($campos)){
+            $campos = null;
         }
-        
-        if(!is_null($where)){
-            $result[2] = $where; 
-        }else{
-            $result[2] = null;
+        if(is_null($where)){
+            $where = null; 
         }
+        $conexao->setSelectBuilder($tabela, $campos, $where);      
         
-        $conexao->setSelectBuilder($result);      
-    	$conexao->execSelect();
-        
-    	if($conexao->getErro()){
-    		return 1;                    #ARRUMAR ISSO EM TODAS AS CLASSES
-    	}
-    	else{
-    		return $conexao->getQuery();
-    	}
+        if(!$conexao->getErro()){
+            return $conexao->getQuery();
+        }
     }
 }

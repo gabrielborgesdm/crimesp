@@ -5,13 +5,9 @@ $crim = new ConexaoPDO();
 $vitm = new ConexaoPDO();
 $deli = new ConexaoPDO();
 
-$crim->setSelectBuilder("criminoso", "*", 0);
-$vitm->setSelectBuilder("vitima", "*", 0);
-$deli->setSelectBuilder("delito", "*", 0);
-
-$crim->execSelect();
-$vitm->execSelect();
-$deli->execSelect();
+$crim->setSelectBuilder("criminoso");
+$vitm->setSelectBuilder("vitima");
+$deli->setSelectBuilder("delito");
 
 if($crim->getErro() or $vitm->getErro() or $deli->getErro()){
     header("Location:index.php");
@@ -31,7 +27,7 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
     echo'
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
-                <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
+                <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Cadastro de crimes</h1>
                     <div class="col-12 mx-auto">
                         <form method="post" id="formCrimes" action="processaCrimes.php">
@@ -105,7 +101,7 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
     echo'
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
-                <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
+                <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Cadastro de crimes</h1>
                     <div class="col-12 mx-auto text-center my-2">
                         <p class="text-danger">É necessário ter dados sobre criminosos,vítimas e delitos antes de continuar...</p>

@@ -1,19 +1,13 @@
 <?php
+
 include 'configDB.php';
+
 class ConexaoPDO {
 
     //Atributos
-    private $host;
-    private $dbname;
-    private $user;
-    private $password;
-    private $insertBuilder;
-    private $selectBuilder;
-    private $sql;
-    private $pdo;
-    private $linha;
-    private $query;
-    private $erro;
+    private $host, $dbname, $user, $password;
+    private $builderToExec, $insertBuilder, $selectBuilder, $updateBuilder;
+    private $sql, $pdo, $linha, $query, $erro;
 
     //Métodos especiais
     public function __construct() {
@@ -52,6 +46,7 @@ class ConexaoPDO {
     public function getLinha() {
         return $this->linha;
     }
+
     public function getQuery() {
         return $this->query;
     }
@@ -59,12 +54,24 @@ class ConexaoPDO {
     public function getErro() {
         return $this->erro;
     }
+    
+    public function getBuilderToExec() {
+        return $this->builderToExec;
+    }
+
     public function getInsertBuilder() {
         return $this->insertBuilder;
     }
+
     public function getSelectBuilder() {
         return $this->selectBuilder;
     }
+
+    public function getUpdateBuilder() {
+        return $this->updateBuilder;
+    }
+
+
     public function setHost($host) {
         $this->host = $host;
     }
@@ -97,87 +104,66 @@ class ConexaoPDO {
     public function setLinha($linha) {
         $this->linha = $linha;
     }
-    
-    public function setQuery($query){
+
+    public function setQuery($query) {
         $this->query = $query;
     }
-    
+
     public function setErro($erro) {
         $this->erro = $erro;
     }
-
-    //Métodos
-    #Recupera valores e atribui $conexao ao mesmo atributo da classe.
-    public function conectarBanco() {
-        $host = $this->getHost();
-        $dbname = $this->getDbname();
-        $user = $this->getUser();
-        $password = $this->getPassword();
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->setPDO($pdo);
+    
+    //Essa função dita qual será a proxima operação a ser executada
+    public function setBuilderToExec($builder){
+        $this->builderToExec = $builder;
     }
 
-    //Apenas nome da tabela
-    public function setSelectBuilder($result) {
-        $tabela = $result[0]; 
-        $campos = $result[1];
-        $where = $result[2];
-        
-        if (is_null($campos)) {
+    public function setSelectBuilder($tabela, $tupla = null, $where = null) {
+
+        if (is_null($tupla)) {
             $selectBuilder = "SELECT * FROM $tabela";
-        }else {
+        }
+        else {
             $selectBuilder = "SELECT ";
-            if (is_array($campos)) {
-                $tamanho = count($campos);
+            if (is_array($tupla)) {
+                $tamanho = count($tupla);
                 $i = 0;
-                foreach ($campos as $key) {
+                foreach ($tupla as $col) {
                     $i++;
-                    $selectBuilder .= "$key";
-                    
+                    $selectBuilder .= "$col";
+
                     if ($i < $tamanho) {
                         $selectBuilder .= ", ";
-                    }else {
+                    }
+                    else {
                         $selectBuilder .= " FROM $tabela";
                     }
                 }
-            }else {
-                $selectBuilder .= "$campos FROM $tabela";
+            }
+            else {
+                $selectBuilder .= "$tupla FROM $tabela";
             }
         }
 
-        if(!is_null($where)){
-           
-            $selectBuilder .= " WHERE " . $where[0] . " = " .$where[1] . " ;";
-        }else{
+        if (!is_null($where)) {
+            $selectBuilder .= " WHERE " . $where[0] . " = " . $where[1] . " ;";
+        }
+        else {
             $selectBuilder .= " ;";
         }
-        $this->selectBuilder = $selectBuilder;   
+        $this->selectBuilder = $selectBuilder;
+        $this->setBuilderToExec("select");
+        $this->execBuilder($selectBuilder);
     }
-
-    public function execSelect() {
-        try {
-            $pdo = $this->getPdo();
-            $query = $pdo->prepare($this->getSelectBuilder());
-            $query->execute();
-        } catch (PDOException $e) {
-            $this->setErro($e);        
-        }
-        
-        $this->setQuery($query);
-        
-    }
-
-    //Insert
 
     public function setInsertBuilder($tabela, $resultado) {
         $insertBuilder = "INSERT INTO $tabela(";
         $tamanho = count($resultado);
         $i = 0;
 
-        foreach ($resultado as $key => $value) {
+        foreach ($resultado as $col => $value) {
             $i++;
-            $insertBuilder .= "$key";
+            $insertBuilder .= "$col";
             if ($i < $tamanho) {
                 $insertBuilder .= ", ";
             }
@@ -187,10 +173,10 @@ class ConexaoPDO {
         }
 
         $insertBuilder .= "VALUES(";
-        $tamanho = count($resultado);
+
         $i = 0;
 
-        foreach ($resultado as $key => $value) {
+        foreach ($resultado as $col => $value) {
             $i++;
             if (is_int($value) or is_double($value)) {
                 $insertBuilder .= $value;
@@ -200,7 +186,7 @@ class ConexaoPDO {
                 $insertBuilder .= "'" . $array . "'";
             }
             else {
-                $insertBuilder .= '"'.$value.'"';
+                $insertBuilder .= '"' . $value . '"';
             }
 
             if ($i < $tamanho) {
@@ -211,16 +197,59 @@ class ConexaoPDO {
             }
         }
         $this->insertBuilder = $insertBuilder;
+        $this->setBuilderToExec("insert");
+        $this->execBuilder($insertBuilder);
+    }
+
+    public function setUpdateBuilder($tabela, $tupla, $where) {
+        $updateBuilder = "UPDATE SET ";
+
+        if (is_array($tupla)) {
+            foreach ($tupla as $col => $value) {
+                $updateBuilder .= "$col = '$value' ";
+            }
+        }
+        foreach ($where as $col => $value) {
+            $updateBuilder .= "$col = '$value' ";
+        }
+        
+        $this->updateBuilder = $updateBuilder;
+        $this->setBuilderToExec("update");
+        $this->execBuilder($updateBuilder);
     }
     
-    public function execInsert() {
+    public function execBuilder($builder) {
+        $pdo = $this->getPdo();
+        $operation = $this->getBuilderToExec();
+       
         try {
-            $pdo = $this->getPdo();
-            $pdo->exec($this->getInsertBuilder());
+            switch($operation){
+                case "update":
+                case "select":
+                    $query = $pdo->prepare($builder);
+                    $query->execute();
+                    $this->setQuery($query);
+                    break;
+                case "insert":
+                case "delete":
+                    $pdo->exec($builder);
+                    break;
+            } 
+            $this->setErro(0);
         } catch (PDOException $e) {
             $this->setErro($e);
         }
     }
-    
+    //Métodos
+    #Recupera valores e atribui $conexao ao mesmo atributo da classe.
+    public function conectarBanco() {
+        $host = $this->getHost();
+        $dbname = $this->getDbname();
+        $user = $this->getUser();
+        $password = $this->getPassword();
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->setPDO($pdo);
+    }
 
 }

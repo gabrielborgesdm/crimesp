@@ -15,10 +15,10 @@ if($countVitm > 0){
     echo'
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
-                <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
+                <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Listagem de vítimas</h1>
                     <div class="col-12 my-4 mx-auto table-responsive">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
@@ -60,7 +60,7 @@ if($countVitm > 0){
     echo'
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
-                <div class="col-11 col-md-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
+                <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Listagem de vítimas</h1>
                     <div class="col-12 mx-auto text-center my-2">
                         <p class="text-danger">Não há vítimas cadastradas</p>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Cabin|Exo+2');
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
 
 @media screen and (max-width: 991px) {
     .nav-item{
@@ -18,8 +18,8 @@
 }
 body{
     font-family: 'Exo 2', sans-serif;
-    font-size: 1.2rem;
 }
+
 .divForm{
     display: none;
 }

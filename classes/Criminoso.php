@@ -108,11 +108,8 @@ class Criminoso{
     
     public function cadastrarCriminoso(){
         $conexao = $this->getConexao();
-		$conexao = new Insert();
     	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
-    	$conexao->execInsert();
     	if($conexao->getErro()){
-    		
     		echo $conexao->getErro();
     	}
     	else{
@@ -121,29 +118,21 @@ class Criminoso{
     }
     public function listarCriminoso($campos = null, $where = null){
         $conexao = $this->getConexao();
-        $result = Array();
-        $result[0] = "criminoso"; 
+    
+        $tabela = "infocriminoso"; 
         
-        if(!is_null($campos)){
-            $result[1] = $campos; 
-        }else{
-            $result[1] = null;
+        if(is_null($campos)){
+            $campos = null;
         }
         
-        if(!is_null($where)){
-            $result[2] = $where; 
-        }else{
-            $result[2] = null;
+        if(is_null($where)){
+            $where = null; 
         }
         
-        $conexao->setSelectBuilder($result);      
-    	$conexao->execSelect();
+        $conexao->setSelectBuilder($tabela, $campos, $where);  
         
-    	if($conexao->getErro()){
-    		return 1;                    #ARRUMAR ISSO EM TODAS AS CLASSES
-    	}
-    	else{
-    		return $conexao->getQuery();
+    	if(!$conexao->getErro()){
+            return $conexao->getQuery();
     	}
     }
     
