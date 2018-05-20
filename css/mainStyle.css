@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Exo+2');
+
+@media screen and (max-width: 991px) {
+    .nav-item{
+        padding-top:0.8rem;
+        width:100%;
+    }
+    .nav-link{
+        text-align: center    
+    }
+}
+.navbar-brand{
+    
+    font-size:2.0rem;
+}
+.nav-item .nav-link{
+   font-size:1.2rem;
+}
+body{
+    font-family: 'Exo 2', sans-serif;
+}
+
+.divForm{
+    display: none;
+}
+#groupTempoCadeia, #groupDataExec{
+    display: none;
+}
+
+#footer{
+    font-size: 1.0rem;
+}
+
