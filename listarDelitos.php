@@ -23,6 +23,7 @@ if($countVitm > 0){
                                 <tr>
                                     <th>Nome</th>
                                     <th>Descrição</th>
+                                    <th colspan="2">Operações</th>
                                 </tr>
                             </thead>
                             <tbody>';
@@ -32,6 +33,7 @@ if($countVitm > 0){
         $html.='<tr>';
         $html.='<td>' . $linha['nome'] . '</td>';
         $html.='<td>' . $linha['descricao'] . '</td>';
+        $html.='<td><a href="formDelitos.php?op=1&id='.$linha['id'].'">Alterar</a> <a href="formDelitos.php?op=2&id='.$linha['id'].'">Remover</a></td>';
         $html.='</tr>';
     }
     echo $html;
@@ -39,8 +41,8 @@ if($countVitm > 0){
                         </table>
                     </div>
                     <div class="col-12 mx-auto text-center my-4">
-                        <p class="text-secondary">Deseja cadastrar mais vítimas?</p>
-                        <a class="btn btn-lg btn-outline-secondary" href="formVitimas.php">Cadastrar</a>
+                        <p class="text-secondary">Deseja cadastrar mais delitos?</p>
+                        <a class="btn btn-lg btn-outline-secondary" href="formDelitos.php">Cadastrar</a>
                     </div> 
                 </div>
             </div>
@@ -52,9 +54,9 @@ if($countVitm > 0){
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
                 <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
-                    <h1 class="text-center mt-4 ">Listagem de vítimas</h1>
+                    <h1 class="text-center mt-4 ">Listagem de delitos</h1>
                     <div class="col-12 mx-auto text-center my-2">
-                        <p class="text-danger">Não há vítimas cadastradas</p>
+                        <p class="text-danger">Não há delitos cadastrados</p>
                         <a class="btn btn-lg btn-outline-secondary" href="index.php">Voltar ao início</a>
                     </div>
                 </div>

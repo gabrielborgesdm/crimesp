@@ -102,4 +102,17 @@ class Crime{
             return $conexao->getQuery();
         }
     }
+    
+    public function apagarCrime($condition){
+        $conexao = $this->getConexao();
+        $conexao->setDeleteBuilder("crime", $condition);
+    }
+    
+    public function alterarCrime($condition){
+        $conexao = $this->getConexao();
+        $tupla = $this->getResultadoPost();
+        $conexao->setUpdateBuilder("crime", $tupla , $condition);
+    }
+    
+    
 }

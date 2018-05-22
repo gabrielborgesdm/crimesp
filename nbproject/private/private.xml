@@ -12,9 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/formCriminosos.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/listarCriminosos.php</file>
             <file>file:/F:/Projetos/wamp64/www/crimesp/classes/ConexaoPDO.php</file>
-            <file>file:/F:/Projetos/wamp64/www/crimesp/processaVitimas.php</file>
-            <file>file:/F:/Projetos/wamp64/www/crimesp/formVitimas.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/processaCriminosos.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/formSucesso.php</file>
+            <file>file:/F:/Projetos/wamp64/www/crimesp/classes/Criminoso.php</file>
         </group>
     </open-files>
 </project-private>

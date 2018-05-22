@@ -29,6 +29,7 @@ if($countCrim > 0){
                                     <th>Sentenca</th>
                                     <th>Tempo Preso</th>
                                     <th>Data para Execução</th>
+                                    <th colspan="2">Operações</th>
                                 </tr>
                             </thead>
                             <tbody>';
@@ -68,6 +69,7 @@ if($countCrim > 0){
         $html.='<td>' . $linha['sentenca'] . '</td>';
         $html.='<td>' . $linha['tempoCadeia'] . '</td>';
         $html.='<td>' . $linha['dataExec'] . '</td>';
+        $html.='<td><a href="formCriminosos.php?op=1&id='.$linha['id'].'">Alterar</a> <a href="formCriminosos.php?op=2&id='.$linha['id'].'">Remover</a></td>';
         $html.='</tr>';
         
        
@@ -75,7 +77,7 @@ if($countCrim > 0){
     echo $html;
     echo'                   </tbody>
                         </table>
-                        <p class="small">O meses foram considerados como tendo 31 dias</p>
+                        <p class="small">Os meses foram considerados como contendo 31 dias</p>
                     </div>
                     <div class="col-12 mx-auto text-center my-4">
                         <p class="text-secondary">Deseja cadastrar mais criminosos?</p>

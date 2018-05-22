@@ -6,7 +6,8 @@ class ConexaoPDO {
 
     //Atributos
     private $host, $dbname, $user, $password;
-    private $builderToExec, $insertBuilder, $selectBuilder, $updateBuilder;
+    private $insertBuilder, $selectBuilder, $updateBuilder, $deleteBuilder;
+    private $builderToExec;
     private $sql, $pdo, $linha, $query, $erro;
 
     //Métodos especiais
@@ -70,7 +71,10 @@ class ConexaoPDO {
     public function getUpdateBuilder() {
         return $this->updateBuilder;
     }
-
+    
+    public function getDeleteBuilder() {
+        return $this->deleteBuilder;
+    }    
 
     public function setHost($host) {
         $this->host = $host;
@@ -118,7 +122,7 @@ class ConexaoPDO {
         $this->builderToExec = $builder;
     }
 
-    public function setSelectBuilder($tabela, $tupla = null, $where = null) {
+    public function setSelectBuilder($tabela, $tupla = null, $condition = null) {
 
         if (is_null($tupla)) {
             $selectBuilder = "SELECT * FROM $tabela";
@@ -145,8 +149,14 @@ class ConexaoPDO {
             }
         }
 
-        if (!is_null($where)) {
-            $selectBuilder .= " WHERE " . $where[0] . " = " . $where[1] . " ;";
+        if (!is_null($condition)) {
+            
+            for ($i = 0; $i < count($condition); $i++) {
+                $selectBuilder .= " WHERE " . $condition[$i]['col'] . " = " . $condition[$i]['value'];
+                if(!empty($condition[$i]['operator'])){
+                    $selectBuilder .= " " . $condition[$i]['operator']; 
+                }
+            }
         }
         else {
             $selectBuilder .= " ;";
@@ -201,21 +211,46 @@ class ConexaoPDO {
         $this->execBuilder($insertBuilder);
     }
 
-    public function setUpdateBuilder($tabela, $tupla, $where) {
-        $updateBuilder = "UPDATE SET ";
-
-        if (is_array($tupla)) {
-            foreach ($tupla as $col => $value) {
-                $updateBuilder .= "$col = '$value' ";
+    public function setUpdateBuilder($tabela, $resultado, $condition) {
+        $updateBuilder = "UPDATE $tabela SET ";
+  
+        $i = 0;
+        $count = count($resultado);
+        foreach ($resultado as $col => $value) {
+            $i++;
+            if (is_int($value) or is_double($value)) {
+                $updateBuilder .= "$col = $value";
+            }
+            else if (is_array($value)) {
+                $array = json_encode($value);
+                $updateBuilder .= "$col = '" . $array . "'";
+            }
+            else {
+                $updateBuilder .= "$col = '".$value."'";
+            }
+            if($i < $count){
+                 $updateBuilder .= ", ";
             }
         }
-        foreach ($where as $col => $value) {
-            $updateBuilder .= "$col = '$value' ";
-        }
         
+        $updateBuilder .= " WHERE ";
+        foreach ($condition as $col => $value) {
+            $updateBuilder .= "$col = '$value[0]' ";
+            if(isset($value[1])){
+                $updateBuilder .= "$value[1] ";
+            }
+        }
+        $updateBuilder .= " ;";
         $this->updateBuilder = $updateBuilder;
         $this->setBuilderToExec("update");
         $this->execBuilder($updateBuilder);
+    }
+    
+    public function setDeleteBuilder($tabela, $condition){
+        $deleteBuilder = "DELETE FROM $tabela WHERE " . $condition['col'] . " = " . $condition['value'];
+        $this->setBuilderToExec("delete");
+        $this->deleteBuilder = $deleteBuilder;
+        $this->execBuilder($deleteBuilder);
     }
     
     public function execBuilder($builder) {

@@ -100,4 +100,14 @@ class Vitima{
             return $conexao->getQuery();
         }
     }
+    public function apagarVitima($condition){
+        $conexao = $this->getConexao();
+        $conexao->setDeleteBuilder("vitima", $condition);
+    }
+    
+    public function alterarVitima($condition){
+        $conexao = $this->getConexao();
+        $tupla = $this->getResultadoPost();
+        $conexao->setUpdateBuilder("vitima", $tupla , $condition);
+    }
 }

@@ -75,4 +75,15 @@ class Delito{
             return $conexao->getQuery();
         }
     }
+    public function apagarDelito($condition){
+        $conexao = $this->getConexao();
+        $conexao->setDeleteBuilder("delito", $condition);
+    }
+    
+    public function alterarDelito($condition){
+        $conexao = $this->getConexao();
+        $tupla = $this->getResultadoPost();
+        $conexao->setUpdateBuilder("delito", $tupla , $condition);
+    }
+    
 }

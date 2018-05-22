@@ -26,6 +26,7 @@ if($countVitm > 0){
                                     <th>Endereço</th>
                                     <th>Sexo</th>
                                     <th>CPF</th>
+                                    <th colspan="2">Operações</th>
                                 </tr>
                             </thead>
                             <tbody>';
@@ -41,6 +42,7 @@ if($countVitm > 0){
         $html.='<td>' . $linha['endereco'] . '</td>';
         $html.='<td>' . $linha['sexo'] . '</td>';
         $html.='<td>' . $linha['cpf'] . '</td>';
+        $html.='<td><a href="formVitimas.php?op=1&id='.$linha['id'].'">Alterar</a> <a href="formVitimas.php?op=2&id='.$linha['id'].'">Remover</a></td>';
         $html.='</tr>';
     }
     echo $html;

@@ -27,13 +27,13 @@ if($countCrim > 0){
                                     <th>Criminoso</th>
                                     <th>Vítima</th>
                                     <th>Delito</th>
+                                    <th>Operações</th>
                                 </tr>
                             </thead>
                             <tbody>';
     $html = "";
     
     while($linha = $query->fetch(PDO::FETCH_ASSOC)){
-        
         $html.='<tr>';
         $html.='<td>' . $linha['crimeDescricao'] . '</td>';
         $html.='<td>' . $linha['crimeLocal'] . '</td>';
@@ -41,6 +41,7 @@ if($countCrim > 0){
         $html.='<td>' . $linha['criminosoNome'] . '</td>';
         $html.='<td>' . $linha['vitimaNome'] . '</td>';
         $html.='<td>' . $linha['delitoNome'] . '</td>';
+        $html.='<td><a href="formCrimes.php?op=1&id='.$linha['id'].'">Alterar</a> <a href="formCrimes.php?op=2&id='.$linha['id'].'">Remover</a></td>';
         $html.='</tr>';
     }
     echo $html;

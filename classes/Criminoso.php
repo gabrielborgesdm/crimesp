@@ -110,13 +110,13 @@ class Criminoso{
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
     	if($conexao->getErro()){
-    		echo $conexao->getErro();
+    		//include('formErro.php');
     	}
     	else{
     		include('formSucesso.php');
     	}
     }
-    public function listarCriminoso($campos = null, $where = null){
+    public function listarCriminoso($campos = null, $condition = null){
         $conexao = $this->getConexao();
     
         $tabela = "infocriminoso"; 
@@ -125,15 +125,26 @@ class Criminoso{
             $campos = null;
         }
         
-        if(is_null($where)){
-            $where = null; 
+        if(is_null($condition)){
+            $condition = null; 
         }
         
-        $conexao->setSelectBuilder($tabela, $campos, $where);  
+        $conexao->setSelectBuilder($tabela, $campos, $condition);  
         
     	if(!$conexao->getErro()){
             return $conexao->getQuery();
     	}
+    }
+    
+    public function apagarCriminoso($condition){
+        $conexao = $this->getConexao();
+        $conexao->setDeleteBuilder("criminoso", $condition);
+    }
+    
+    public function alterarCriminoso($condition){
+        $conexao = $this->getConexao();
+        $tupla = $this->getResultadoPost();
+        $conexao->setUpdateBuilder("criminoso", $tupla , $condition);
     }
     
 }

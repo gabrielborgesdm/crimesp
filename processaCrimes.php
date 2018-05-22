@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once'classes/Crime.php';
 
 $retorno = Array();
@@ -15,4 +16,15 @@ $loc = "Location: formCrimes.php";
 
 $crime = new Crime();
 $crime->recebeDados($resultado);
-$crime->cadastrarCrime();
+
+if(isset($_SESSION["updateCrime"])){
+    $crime->alterarCrime(Array("id"=>$_SESSION['idCrime']));
+    session_destroy();
+    if($crime->getConexao()->getErro()){
+        header("Location: formErro.php");
+    }else{
+        header("Location: formSucesso.php"); 
+    }
+}else{
+    $crime->cadastrarCrime();
+}   

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 20, 2018 at 01:24 AM
+-- Generation Time: May 22, 2018 at 07:13 PM
 -- Server version: 5.7.21
 -- PHP Version: 5.6.35
 
@@ -37,15 +37,11 @@ CREATE TABLE IF NOT EXISTS `crime` (
   `criminoso` int(11) NOT NULL,
   `vitima` int(11) NOT NULL,
   `delito` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `criminoso` (`criminoso`),
+  KEY `vitima` (`vitima`),
+  KEY `delito` (`delito`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `crime`
---
-
-INSERT INTO `crime` (`id`, `descricao`, `local`, `dataCrime`, `criminoso`, `vitima`, `delito`) VALUES
-(1, 'Briga de bebados.', 'Bar do Zeca', '2018-05-18', 3, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -72,10 +68,9 @@ CREATE TABLE IF NOT EXISTS `criminoso` (
 --
 
 INSERT INTO `criminoso` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`, `sentenca`, `dataExec`, `tempoCadeia`) VALUES
-(1, 'Zeca Pilantrinha', 'Rua dos Loucos Magos, 327, Araraquara', '1988-03-02', 'M', '13214519698', 2, NULL, '{\"anos\":\"1\",\"dias\":\"2\"}'),
-(2, 'Maria Vai e Volta', 'Avenida Dos que não foram, 1003, São Carlos', '1994-10-09', 'F', '3225698655', 2, NULL, '{\"meses\":\"12\"}'),
-(3, 'Mané Brabinho da Silva', NULL, '1967-11-05', 'M', NULL, 1, NULL, NULL),
-(4, 'Joana do Escuro', NULL, '1999-05-14', 'F', '16917825489', 3, '2018-05-31', NULL);
+(1, 'João de Andrade', 'Avenida Padre de Não das quantas, 255, Araraquara', '2018-05-24', 'M', '13230276894', 1, NULL, NULL),
+(2, 'Lucas Santos', NULL, '1987-09-23', 'M', NULL, 2, NULL, '{\"anos\":\"2\",\"meses\":\"3\",\"dias\":\"4\"}'),
+(3, 'Maria Madalena', 'Avenida dos Delinquentes, 746, Cubatão', '1990-05-12', 'F', NULL, 3, '2018-05-24', NULL);
 
 -- --------------------------------------------------------
 
@@ -89,15 +84,14 @@ CREATE TABLE IF NOT EXISTS `delito` (
   `nome` varchar(80) COLLATE utf8_bin NOT NULL,
   `descricao` varchar(180) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `delito`
 --
 
 INSERT INTO `delito` (`id`, `nome`, `descricao`) VALUES
-(1, 'Agressão Corporal', 'Agressão  física-corporal'),
-(2, 'Assalto a mão armada', 'Assalto com a mão armada');
+(1, 'Assalto a mão armada', 'Roubo ou sei lá');
 
 -- --------------------------------------------------------
 
@@ -107,7 +101,8 @@ INSERT INTO `delito` (`id`, `nome`, `descricao`) VALUES
 --
 DROP VIEW IF EXISTS `infocrime`;
 CREATE TABLE IF NOT EXISTS `infocrime` (
-`criminosoNome` varchar(80)
+`id` int(11)
+,`criminosoNome` varchar(80)
 ,`vitimaNome` varchar(80)
 ,`delitoNome` varchar(80)
 ,`crimeLocal` varchar(150)
@@ -178,8 +173,8 @@ CREATE TABLE IF NOT EXISTS `vitima` (
 --
 
 INSERT INTO `vitima` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`) VALUES
-(1, 'Jão Vitiminha da Silva', 'Rua dos Comadres, 753, São Paulo', '2001-02-03', 'M', '16814716889'),
-(2, 'Madalena Maria e Silva', 'Avenida Padre de Não das quantas, 255, Araraquara', '1979-03-30', 'F', '1641788995');
+(1, 'Noah Bagg', NULL, '2000-02-12', 'M', NULL),
+(2, 'Juleda da Silva', NULL, '1978-05-25', 'F', NULL);
 
 -- --------------------------------------------------------
 
@@ -188,7 +183,7 @@ INSERT INTO `vitima` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`) VALUE
 --
 DROP TABLE IF EXISTS `infocrime`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `infocrime`  AS  select `criminoso`.`nome` AS `criminosoNome`,`vitima`.`nome` AS `vitimaNome`,`delito`.`nome` AS `delitoNome`,`crime`.`local` AS `crimeLocal`,`crime`.`dataCrime` AS `crimeData`,`crime`.`descricao` AS `crimeDescricao` from (((`crime` join `criminoso` on((`crime`.`criminoso` = `criminoso`.`id`))) join `vitima` on((`crime`.`vitima` = `vitima`.`id`))) join `delito` on((`crime`.`delito` = `delito`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `infocrime`  AS  select `crime`.`id` AS `id`,`criminoso`.`nome` AS `criminosoNome`,`vitima`.`nome` AS `vitimaNome`,`delito`.`nome` AS `delitoNome`,`crime`.`local` AS `crimeLocal`,`crime`.`dataCrime` AS `crimeData`,`crime`.`descricao` AS `crimeDescricao` from (((`crime` join `criminoso` on((`crime`.`criminoso` = `criminoso`.`id`))) join `vitima` on((`crime`.`vitima` = `vitima`.`id`))) join `delito` on((`crime`.`delito` = `delito`.`id`))) ;
 
 -- --------------------------------------------------------
 
