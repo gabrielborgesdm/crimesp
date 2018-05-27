@@ -7,7 +7,7 @@ class ConexaoPDO {
     //Atributos
     private $host, $dbname, $user, $password;
     private $insertBuilder, $selectBuilder, $updateBuilder, $deleteBuilder;
-    private $builderToExec;
+    private $builderToExec, $likeBuilder;
     private $sql, $pdo, $linha, $query, $erro;
 
     //Métodos especiais
@@ -74,6 +74,10 @@ class ConexaoPDO {
     
     public function getDeleteBuilder() {
         return $this->deleteBuilder;
+    }
+
+    public function getLikeBuilder() {
+        return $this->likeBuilder;
     }    
 
     public function setHost($host) {
@@ -257,24 +261,43 @@ class ConexaoPDO {
         $pdo = $this->getPdo();
         $operation = $this->getBuilderToExec();
        
-        try {
-            switch($operation){
-                case "update":
-                case "select":
+        
+        switch($operation){
+            case "update":
+            case "select":
+                try {
                     $query = $pdo->prepare($builder);
                     $query->execute();
                     $this->setQuery($query);
-                    break;
-                case "insert":
-                case "delete":
-                    $pdo->exec($builder);
-                    break;
-            } 
-            $this->setErro(0);
-        } catch (PDOException $e) {
-            $this->setErro($e);
-        }
+                } catch (PDOException $e){
+                    $this->setErro($e->getMessage());
+                }   
+                break;
+            case "insert":
+            case "delete":
+                try {
+                    $stmt = $pdo->prepare($builder);
+                    $stmt->execute();  
+                  } catch(PDOException $e) {
+              
+                      $this->setErro($e->getMessage());
+                  }
+                break;
+        } 
+            
+        
     }
+    
+    public function setLikeBuilder($tabela, $col, $filter) {
+       
+        $setLikeBuilder = "SELECT * FROM $tabela WHERE $col LIKE %$filter OR"
+                . "$col LIKE %$filter% OR $col LIKE $filter%";
+       
+        $this->setLikeBuilder = $setLikeBuilder;
+        $this->setBuilderToExec("select");
+        $this->execBuilder($setLikeBuilder);
+    }
+    
     //Métodos
     #Recupera valores e atribui $conexao ao mesmo atributo da classe.
     public function conectarBanco() {

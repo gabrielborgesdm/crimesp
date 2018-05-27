@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1
+-- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1:3306
--- Generation Time: May 22, 2018 at 07:13 PM
--- Server version: 5.7.21
--- PHP Version: 5.6.35
+-- Host: localhost
+-- Generation Time: May 27, 2018 at 12:21 AM
+-- Server version: 5.7.11
+-- PHP Version: 5.6.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -28,20 +26,15 @@ SET time_zone = "+00:00";
 -- Table structure for table `crime`
 --
 
-DROP TABLE IF EXISTS `crime`;
-CREATE TABLE IF NOT EXISTS `crime` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(200) COLLATE utf8_bin NOT NULL,
-  `local` varchar(150) COLLATE utf8_bin NOT NULL,
-  `dataCrime` date NOT NULL,
-  `criminoso` int(11) NOT NULL,
-  `vitima` int(11) NOT NULL,
-  `delito` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `criminoso` (`criminoso`),
-  KEY `vitima` (`vitima`),
-  KEY `delito` (`delito`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+CREATE TABLE `crime` (
+  `id` int(11) NOT NULL,
+  `descricao` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `local` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `data_crime` date NOT NULL,
+  `id_criminoso` int(11) NOT NULL,
+  `id_vitima` int(11) NOT NULL,
+  `id_delito` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -49,28 +42,17 @@ CREATE TABLE IF NOT EXISTS `crime` (
 -- Table structure for table `criminoso`
 --
 
-DROP TABLE IF EXISTS `criminoso`;
-CREATE TABLE IF NOT EXISTS `criminoso` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(80) COLLATE utf8_bin NOT NULL,
-  `endereco` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+CREATE TABLE `criminoso` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(80) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `endereco` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `dataNasc` date DEFAULT NULL,
-  `sexo` char(1) COLLATE utf8_bin NOT NULL,
-  `cpf` varchar(11) COLLATE utf8_bin DEFAULT NULL,
-  `sentenca` int(11) NOT NULL,
+  `sexo` char(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `cpf` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `id_sentenca` int(11) NOT NULL,
   `dataExec` date DEFAULT NULL,
-  `tempoCadeia` varchar(300) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `criminoso`
---
-
-INSERT INTO `criminoso` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`, `sentenca`, `dataExec`, `tempoCadeia`) VALUES
-(1, 'João de Andrade', 'Avenida Padre de Não das quantas, 255, Araraquara', '2018-05-24', 'M', '13230276894', 1, NULL, NULL),
-(2, 'Lucas Santos', NULL, '1987-09-23', 'M', NULL, 2, NULL, '{\"anos\":\"2\",\"meses\":\"3\",\"dias\":\"4\"}'),
-(3, 'Maria Madalena', 'Avenida dos Delinquentes, 746, Cubatão', '1990-05-12', 'F', NULL, 3, '2018-05-24', NULL);
+  `tempoCadeia` varchar(300) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -78,56 +60,11 @@ INSERT INTO `criminoso` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`, `s
 -- Table structure for table `delito`
 --
 
-DROP TABLE IF EXISTS `delito`;
-CREATE TABLE IF NOT EXISTS `delito` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(80) COLLATE utf8_bin NOT NULL,
-  `descricao` varchar(180) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `delito`
---
-
-INSERT INTO `delito` (`id`, `nome`, `descricao`) VALUES
-(1, 'Assalto a mão armada', 'Roubo ou sei lá');
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `infocrime`
--- (See below for the actual view)
---
-DROP VIEW IF EXISTS `infocrime`;
-CREATE TABLE IF NOT EXISTS `infocrime` (
-`id` int(11)
-,`criminosoNome` varchar(80)
-,`vitimaNome` varchar(80)
-,`delitoNome` varchar(80)
-,`crimeLocal` varchar(150)
-,`crimeData` date
-,`crimeDescricao` varchar(200)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `infocriminoso`
--- (See below for the actual view)
---
-DROP VIEW IF EXISTS `infocriminoso`;
-CREATE TABLE IF NOT EXISTS `infocriminoso` (
-`id` int(11)
-,`nome` varchar(80)
-,`endereco` varchar(150)
-,`dataNasc` date
-,`sexo` char(1)
-,`cpf` varchar(11)
-,`sentenca` varchar(40)
-,`dataExec` date
-,`tempoCadeia` varchar(300)
-);
+CREATE TABLE `delito` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(80) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `descricao` varchar(180) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -135,12 +72,10 @@ CREATE TABLE IF NOT EXISTS `infocriminoso` (
 -- Table structure for table `sentenca`
 --
 
-DROP TABLE IF EXISTS `sentenca`;
-CREATE TABLE IF NOT EXISTS `sentenca` (
+CREATE TABLE `sentenca` (
   `id` int(11) NOT NULL,
-  `sentenca` varchar(40) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  `sentenca` varchar(40) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `sentenca`
@@ -154,46 +89,144 @@ INSERT INTO `sentenca` (`id`, `sentenca`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `view_crime`
+--
+CREATE TABLE `view_crime` (
+`id` int(11)
+,`descricao` varchar(200)
+,`local` varchar(150)
+,`data_crime` date
+,`id_criminoso` int(11)
+,`id_vitima` int(11)
+,`id_delito` int(11)
+,`nome_criminoso` varchar(80)
+,`nome_vitima` varchar(80)
+,`nome_delito` varchar(80)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `view_criminoso`
+--
+CREATE TABLE `view_criminoso` (
+`id` int(11)
+,`nome` varchar(80)
+,`endereco` varchar(150)
+,`dataNasc` date
+,`sexo` char(1)
+,`cpf` varchar(11)
+,`id_sentenca` int(11)
+,`dataExec` date
+,`tempoCadeia` varchar(300)
+,`sentenca` varchar(40)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `vitima`
 --
 
-DROP TABLE IF EXISTS `vitima`;
-CREATE TABLE IF NOT EXISTS `vitima` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(80) COLLATE utf8_bin NOT NULL,
-  `endereco` varchar(150) COLLATE utf8_bin DEFAULT NULL,
+CREATE TABLE `vitima` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(80) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `endereco` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `dataNasc` date DEFAULT NULL,
-  `sexo` char(1) COLLATE utf8_bin NOT NULL,
-  `cpf` varchar(11) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `vitima`
---
-
-INSERT INTO `vitima` (`id`, `nome`, `endereco`, `dataNasc`, `sexo`, `cpf`) VALUES
-(1, 'Noah Bagg', NULL, '2000-02-12', 'M', NULL),
-(2, 'Juleda da Silva', NULL, '1978-05-25', 'F', NULL);
+  `sexo` char(1) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `cpf` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `infocrime`
+-- Structure for view `view_crime`
 --
-DROP TABLE IF EXISTS `infocrime`;
+DROP TABLE IF EXISTS `view_crime`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `infocrime`  AS  select `crime`.`id` AS `id`,`criminoso`.`nome` AS `criminosoNome`,`vitima`.`nome` AS `vitimaNome`,`delito`.`nome` AS `delitoNome`,`crime`.`local` AS `crimeLocal`,`crime`.`dataCrime` AS `crimeData`,`crime`.`descricao` AS `crimeDescricao` from (((`crime` join `criminoso` on((`crime`.`criminoso` = `criminoso`.`id`))) join `vitima` on((`crime`.`vitima` = `vitima`.`id`))) join `delito` on((`crime`.`delito` = `delito`.`id`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_crime`  AS  select `crime`.`id` AS `id`,`crime`.`descricao` AS `descricao`,`crime`.`local` AS `local`,`crime`.`data_crime` AS `data_crime`,`crime`.`id_criminoso` AS `id_criminoso`,`crime`.`id_vitima` AS `id_vitima`,`crime`.`id_delito` AS `id_delito`,`criminoso`.`nome` AS `nome_criminoso`,`vitima`.`nome` AS `nome_vitima`,`delito`.`nome` AS `nome_delito` from (((`crime` join `criminoso` on((`crime`.`id_criminoso` = `criminoso`.`id`))) join `vitima` on((`crime`.`id_vitima` = `vitima`.`id`))) join `delito` on((`crime`.`id_delito` = `delito`.`id`))) ;
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `infocriminoso`
+-- Structure for view `view_criminoso`
 --
-DROP TABLE IF EXISTS `infocriminoso`;
+DROP TABLE IF EXISTS `view_criminoso`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `infocriminoso`  AS  select `criminoso`.`id` AS `id`,`criminoso`.`nome` AS `nome`,`criminoso`.`endereco` AS `endereco`,`criminoso`.`dataNasc` AS `dataNasc`,`criminoso`.`sexo` AS `sexo`,`criminoso`.`cpf` AS `cpf`,`sentenca`.`sentenca` AS `sentenca`,`criminoso`.`dataExec` AS `dataExec`,`criminoso`.`tempoCadeia` AS `tempoCadeia` from (`criminoso` join `sentenca` on((`criminoso`.`sentenca` = `sentenca`.`id`))) ;
-COMMIT;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_criminoso`  AS  select `criminoso`.`id` AS `id`,`criminoso`.`nome` AS `nome`,`criminoso`.`endereco` AS `endereco`,`criminoso`.`dataNasc` AS `dataNasc`,`criminoso`.`sexo` AS `sexo`,`criminoso`.`cpf` AS `cpf`,`criminoso`.`id_sentenca` AS `id_sentenca`,`criminoso`.`dataExec` AS `dataExec`,`criminoso`.`tempoCadeia` AS `tempoCadeia`,`sentenca`.`sentenca` AS `sentenca` from (`criminoso` join `sentenca` on((`criminoso`.`id_sentenca` = `sentenca`.`id`))) ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `crime`
+--
+ALTER TABLE `crime`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_criminoso` (`id_criminoso`),
+  ADD KEY `id_vitima` (`id_vitima`),
+  ADD KEY `id_delito` (`id_delito`);
+
+--
+-- Indexes for table `criminoso`
+--
+ALTER TABLE `criminoso`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `delito`
+--
+ALTER TABLE `delito`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sentenca`
+--
+ALTER TABLE `sentenca`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vitima`
+--
+ALTER TABLE `vitima`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `crime`
+--
+ALTER TABLE `crime`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `criminoso`
+--
+ALTER TABLE `criminoso`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `delito`
+--
+ALTER TABLE `delito`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `vitima`
+--
+ALTER TABLE `vitima`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `crime`
+--
+ALTER TABLE `crime`
+  ADD CONSTRAINT `crime_ibfk_1` FOREIGN KEY (`id_vitima`) REFERENCES `vitima` (`id`),
+  ADD CONSTRAINT `crime_ibfk_2` FOREIGN KEY (`id_delito`) REFERENCES `delito` (`id`),
+  ADD CONSTRAINT `crime_ibfk_3` FOREIGN KEY (`id_criminoso`) REFERENCES `criminoso` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

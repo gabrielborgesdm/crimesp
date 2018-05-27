@@ -4,7 +4,7 @@ class Criminoso{
 	//Atributos
 	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
 	private $sentenca, $tempoCadeia, $dataExec; 
-	private $resultadoPost, $conexao;
+	private $fields, $conexao;
 
     //Métodos Especiais
     public function __construct(){
@@ -39,8 +39,8 @@ class Criminoso{
     public function getDataExec(){
         return $this->dataExec;
     }
-    public function getResultadoPost(){
-    	return $this->resultadoPost;
+    public function getFields(){
+    	return $this->fields;
     }
     public function getConexao(){
         return $this->conexao;
@@ -73,64 +73,58 @@ class Criminoso{
     public function setDataExec($dataExec){
         $this->dataExec = $dataExec;
     }
-    public function setResultadoPost($resultadoPost){
-    	$this->resultadoPost = $resultadoPost;
+    public function setFields($resultado) {
+        $fields = Array();
+        
+        $this->setNome($resultado["nome"]);
+        $fields['nome'] = $resultado["nome"];
+        
+        $this->setDataNasc($resultado["dataNasc"]);
+        $fields['dataNasc'] = $resultado["dataNasc"];
+        
+        $this->setSexo($resultado["sexo"]);
+        $fields['sexo'] = $resultado["sexo"];
+        
+        $this->setSentenca($resultado["sentenca"]);
+        $fields['id_sentenca'] = $resultado["sentenca"];
+        
+        if(!empty($resultado["dataExec"])){
+            $this->setDataExec($resultado["dataExec"]);
+            $fields['dataExec'] = $resultado["dataExec"];
+        }
+
+        if(!empty($resultado["tempoCadeia"])){
+            $this->setTempoCadeia($resultado["tempoCadeia"]);
+            $fields['tempoCadeia'] = $resultado["tempoCadeia"];
+        }
+
+        if(!empty($resultado["endereco"])){
+            $this->setEndereco($resultado["endereco"]);
+            $fields['endereco'] = $resultado["endereco"];
+        }
+
+        if(!empty($resultado["cpf"])){
+            $this->setCpf($resultado["cpf"]);
+            $fields['cpf'] = $resultado["cpf"];
+        }           
+        
+        $this->fields = $fields;
     }
     public function setConexao($conexao){
         $this->conexao = $conexao;
     }
     //Métodos
-    public function recebeDados($resultado) {
-       
-        $this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDataNasc($resultado["dataNasc"]);
-        $this->setSexo($resultado["sexo"]);
-        $this->setSentenca($resultado["sentenca"]);
-        
-        if(!empty($resultado["dataExec"])){
-            $this->setDataExec($resultado["dataExec"]);
-        }
-
-        if(!empty($resultado["tempoCadeia"])){
-            $this->setTempoCadeia($resultado["tempoCadeia"]);       
-        }
-
-        if(!empty($resultado["endereco"])){
-            $this->setEndereco($resultado["endereco"]);
-        }
-
-        if(!empty($resultado["cpf"])){
-            $this->setCpf($resultado["cpf"]);
-        }           
-        
-    }
-    
     public function cadastrarCriminoso(){
         $conexao = $this->getConexao();
-    	$conexao->setInsertBuilder("criminoso", $this->getResultadoPost());
-    	if($conexao->getErro()){
-    		//include('formErro.php');
-    	}
-    	else{
-    		include('formSucesso.php');
+    	$conexao->setInsertBuilder("criminoso", $this->getFields());
+    	if(!$conexao->getErro()){
+    		return $conexao->getQuery();
     	}
     }
     public function listarCriminoso($campos = null, $condition = null){
         $conexao = $this->getConexao();
-    
-        $tabela = "infocriminoso"; 
-        
-        if(is_null($campos)){
-            $campos = null;
-        }
-        
-        if(is_null($condition)){
-            $condition = null; 
-        }
-        
+        $tabela = "view_criminoso"; 
         $conexao->setSelectBuilder($tabela, $campos, $condition);  
-        
     	if(!$conexao->getErro()){
             return $conexao->getQuery();
     	}
@@ -139,12 +133,22 @@ class Criminoso{
     public function apagarCriminoso($condition){
         $conexao = $this->getConexao();
         $conexao->setDeleteBuilder("criminoso", $condition);
+        $this->setConexao($conexao);
     }
     
     public function alterarCriminoso($condition){
         $conexao = $this->getConexao();
-        $tupla = $this->getResultadoPost();
-        $conexao->setUpdateBuilder("criminoso", $tupla , $condition);
+        $fields = $this->getFields();
+        $conexao->setUpdateBuilder("criminoso", $fields , $condition);
+    }
+    
+    public function filtrarCriminoso($col, $filter){
+        $conexao = $this->getConexao();
+        $tabela = "infocriminoso"; 
+        $conexao->setSelectBuilder($tabela, $col, $filter);  
+    	if(!$conexao->getErro()){
+            return $conexao->getQuery();
+    	}
     }
     
 }

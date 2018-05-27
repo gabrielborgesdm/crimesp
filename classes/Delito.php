@@ -3,7 +3,7 @@ require_once'classes\ConexaoPDO.php';
 class Delito{
 	//Atributos
 	private $nome, $id, $descricao;
-	private $resultadoPost, $conexao;
+	private $fields, $conexao;
 
     //Métodos Especiais
     public function __construct(){
@@ -19,8 +19,8 @@ class Delito{
     public function getDescricao() {
         return $this->descricao;
     }
-    public function getResultadoPost(){
-    	return $this->resultadoPost;
+    public function getFields(){
+    	return $this->fields;
     }
     public function getConexao(){
         return $this->conexao;
@@ -31,46 +31,35 @@ class Delito{
     public function setNome($nome){
 		$this->nome = $nome;
 	}
-    public function setResultadoPost($resultadoPost){
-    	$this->resultadoPost = $resultadoPost;
-    }
     public function setDescricao($descricao) {
         $this->descricao = $descricao;
+    }
+    public function setFields($resultado){
+        $fields = array();
+        
+        $this->setNome($resultado["nome"]);
+        $fields['nome'] = $resultado['nome'];
+        
+        $this->setDescricao($resultado["descricao"]);
+        $fields['descricao'] = $resultado['descricao'];
+        
+    	$this->fields = $fields;
     }
     public function setConexao($conexao){
         $this->conexao = $conexao;
     }
     //Métodos
-    public function recebeDados($resultado) {
-        $db = configDB();
-        $conexao = new ConexaoPDO();
-        $this->setConexao($conexao);
-        $this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDescricao($resultado["descricao"]);
-    }
-    
     public function cadastrarDelitos(){
         $conexao = $this->getConexao();
-    	$conexao->setInsertBuilder("delito", $this->getResultadoPost());
-    	if($conexao->getErro()){
-    		echo $conexao->getErro();
-    	}
-    	else{
-    		include('formSucesso.php');
-    	}
+    	$conexao->setInsertBuilder("delito", $this->getFields());
+    	if(!$conexao->getErro()){
+            return $conexao->getQuery();
+        }
     }
     public function listarDelito($campos = null, $where = null){
         $conexao = $this->getConexao();
         $tabela = "delito"; 
-        if(is_null($campos)){
-            $campos = null;
-        }
-        if(is_null($where)){
-            $where = null; 
-        }
         $conexao->setSelectBuilder($tabela, $campos, $where);      
-        
         if(!$conexao->getErro()){
             return $conexao->getQuery();
         }
@@ -82,8 +71,8 @@ class Delito{
     
     public function alterarDelito($condition){
         $conexao = $this->getConexao();
-        $tupla = $this->getResultadoPost();
-        $conexao->setUpdateBuilder("delito", $tupla , $condition);
+        $fields = $this->getFields();
+        $conexao->setUpdateBuilder("delito", $fields , $condition);
     }
     
 }

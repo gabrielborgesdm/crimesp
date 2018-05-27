@@ -1,8 +1,6 @@
 <?php
 require_once'classes/Vitima.php';
 session_start();
-$retorno = Array();
-//Recuperar Posts e armazena-los em um Array
 $resultado = Array();
 $loc = "Location: formVitimas.php";
 (empty($_POST["nome"])) ? header($loc) : $resultado["nome"] = $_POST["nome"];
@@ -13,15 +11,16 @@ $loc = "Location: formVitimas.php";
 
 
 $vitima = new Vitima();
-$vitima->recebeDados($resultado);
+$vitima->setFields($resultado);
 if(isset($_SESSION["updateVitima"])){
     $vitima->alterarVitima(Array("id"=>$_SESSION['idVitima']));
     session_destroy();
-    if($vitima->getConexao()->getErro()){
+}else{
+    $vitima->cadastrarVitima();
+}
+
+if($vitima->getConexao()->getErro()){
         header("Location: formErro.php");
     }else{
        header("Location: formSucesso.php"); 
     }
-}else{
-    $vitima->cadastrarVitima();
-}  

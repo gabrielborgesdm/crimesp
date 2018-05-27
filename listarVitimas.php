@@ -66,7 +66,7 @@ if($countVitm > 0){
                     <h1 class="text-center mt-4 ">Listagem de vítimas</h1>
                     <div class="col-12 mx-auto text-center my-2">
                         <p class="text-danger">Não há vítimas cadastradas</p>
-                        <a class="btn btn-lg btn-outline-secondary" href="index.php">Voltar ao início</a>
+                        <a class="btn btn-lg btn-outline-secondary" href="formVitimas.php">Cadastrar</a>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
         $condition = Array("col" => 'id', "value" => $id);
         $vitm->apagarVitima($condition);
         if($vitm->getConexao()->getErro()){
-            header('Location: formSucesso.php');
+            header('Location: formErro.php');
             die();
         }else{
             header('Location: formSucesso.php');

@@ -1,44 +1,44 @@
-<?php 
+<?php
+
 session_start();
 include 'header.php';
 include 'classes/Criminoso.php';
 include 'classes/Vitima.php';
 include 'classes/Delito.php';
-    
-if(isset($_GET["op"]) and isset($_GET["id"])){
-  
+
+if (isset($_GET["op"]) and isset($_GET["id"])) {
+
     $operacao = $_GET["op"];
     $id = $_GET["id"];
-    
+
     include_once 'classes/Crime.php';
     $crim = new Crime();
     $_SESSION['idCrime'] = $id;
-    
-    if($operacao == 2){
+
+    if ($operacao == 2) {
         $condition = Array("col" => 'id', "value" => $id);
         $crim->apagarCrime($condition);
-        if($crim->getConexao()->getErro()){
-            header('Location: formSucesso.php');
+        if ($crim->getConexao()->getErro() != null) {
+            header('Location: formErro.php');
             die();
-        }else{
+        } else {
             header('Location: formSucesso.php');
             die();
         }
-    }else if($operacao == 1){
+    } else if ($operacao == 1) {
         $_SESSION['updateCrime'] = 1;
         $where = array();
         $where[0]['col'] = 'id';
         $where[0]['value'] = $id;
-       
+
         $query = $crim->listarCrime(null, $where);
-        
-        if($crim->getConexao()->getErro()){
+
+        if ($crim->getConexao()->getErro()) {
             header('Location: formErro.php');
             die();
-        }else{
+        } else {
             $linha = $query->fetch(PDO::FETCH_ASSOC);
-        } 
-        
+        }
     }
 }
 
@@ -50,22 +50,22 @@ $queryCrim = $crim->listarCriminoso($campos);
 $queryVitm = $vitm->listarVitima($campos);
 $queryDeli = $deli->listarDelito($campos);
 
-if($crim->getConexao()->getErro() or $vitm->getConexao()->getErro() or $deli->getConexao()->getErro()){
+if ($crim->getConexao()->getErro() or $vitm->getConexao()->getErro() or $deli->getConexao()->getErro()) {
     header("Location:index.php");
     die();
 }
 
 
-$resultCrim = $queryCrim -> fetchAll(PDO::FETCH_ASSOC);
-$resultVitm = $queryVitm -> fetchAll(PDO::FETCH_ASSOC);
-$resultDeli = $queryDeli -> fetchAll(PDO::FETCH_ASSOC);
+$resultCrim = $queryCrim->fetchAll(PDO::FETCH_ASSOC);
+$resultVitm = $queryVitm->fetchAll(PDO::FETCH_ASSOC);
+$resultDeli = $queryDeli->fetchAll(PDO::FETCH_ASSOC);
 
 $countCrim = count($resultCrim);
 $countVitm = count($resultVitm);
 $countDeli = count($resultDeli);
 $html = '';
 
-if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
+if ($countCrim > 0 and $countVitm > 0 and $countDeli > 0) {
     $html.='
         <section class="container-fluid mt-4 mb-5">
             <div class="row">
@@ -76,69 +76,75 @@ if($countCrim > 0 and $countVitm > 0 and $countDeli > 0){
                             <div class="form-group py-3">
                                 <label for="descricao">Descrição do crime*</label>
                                 <textarea name="descricao" id="descricao" required="required" class="form-control" rows="3" style="resize: none;">';
-                                if(isset($linha['crimeDescricao'])){
-                                    $html.= $linha['crimeDescricao'];
-                                }
-    $html.=                   '</textarea>
+    if (isset($linha['descricao'])) {
+        $html.= $linha['descricao'];
+    }
+    $html.= '</textarea>
                             </div>
                             <div class="form-group py-3">
                                 <label for="local">Local de ocorrência*</label>
                                 <input type="text" class="form-control" name="local" id="local" required';
-                                if(isset($linha['crimeLocal'])){
-                                    $html.=' value = "' . $linha['crimeLocal'] . '"';
-                                }
-    $html.=                   '/>
+    if (isset($linha['local'])) {
+        $html.=' value = "' . $linha['local'] . '"';
+    }
+    $html.= '/>
                             </div>
                             <div class="form-group py-3">
                                 <label for="dataCrime">Data de ocorrência*</label>
                                 <input type="date" class="form-control" name="dataCrime" id="dataCrime" required';
-                                if(isset($linha['crimeData'])){
-                                    $html.=' value = "' . $linha['crimeData'] . '"';
-                                }
-    $html.=                   '/>
+    if (isset($linha['data_crime'])) {
+        $html.=' value = "' . $linha['data_crime'] . '"';
+    }
+    $html.= '/>
                             </div>
                             <div class="form-group py-3">
                                 <label>Criminoso*</label>
                                 <select class="form-control" name="criminoso">';
-                                
-                                for($i = 0; $i < $countCrim ; $i++){
-                                    $linha = $resultCrim[$i];
-                                    $id = $linha["id"];
-                                    $nome = $linha["nome"];
-                                    $html.= '<option value="'.$id.'">'.$nome.'</option>';   
-                                }
-                                    
+    
+    for ($i = 0; $i < $countCrim; $i++) {
+        $selected = '';
+        $linhaCriminoso = $resultCrim[$i];
+        if(isset($linha)){
+            ($linhaCriminoso['id'] != $linha['id_criminoso'])?:$selected = "selected";
+        }
+        $html.= '<option value="' . $linhaCriminoso["id"] . '" ' . $selected .'>' . $linhaCriminoso["nome"] . '</option>';
+    }
+
     $html.='                    </select>   
                             </div>
 							
 							<div class="form-group py-3">
                                 <label>Vítima*</label>
                                 <select class="form-control" name="vitima">';
-											
-  
-								for($i = 0; $i < $countVitm ; $i++){
-									$linha = $resultVitm[$i];
-									$id = $linha["id"];
-									$nome = $linha["nome"];
-									$html.= '<option value="'.$id.'">'.$nome.'</option>';   
-								}
- 
+
+    
+    for ($i = 0; $i < $countVitm; $i++) {
+        $selected = '';
+        $linhaVitima = $resultVitm[$i];
+        if(isset($linha)){
+            ($linhaVitima['id'] != $linha['id_vitima'])?:$selected = "selected";
+        }
+        $html.= '<option value="' . $linhaVitima["id"]  . '" ' . $selected .'>' . $linhaVitima["nome"] . '</option>';
+    }
+
     $html.='                    </select> 
 							</div>
 
                             <div class="form-group py-3">
                                 <label>Delito praticado*</label>
                                 <select class="form-control" name="delito">';
-                                            
-  
-                                for($i = 0; $i < $countDeli ; $i++){
-                                    $linha = $resultDeli[$i];
-                                    $id = $linha["id"];
-                                    $nome = $linha["nome"];
-                                    $html.= '<option value="'.$id.'">'.$nome.'</option>';   
-                                }
- 
-$html.='                        </select> 
+
+    
+    for ($i = 0; $i < $countDeli; $i++) {
+        $selected = '';
+        $linhaDelito = $resultDeli[$i];
+        if(isset($linha)){
+            ($linhaDelito['id'] != $linha['id_delito'])?:$selected = "selected";
+        }    
+        $html.= '<option value="' . $linhaDelito["id"]  . '" ' . $selected .'>' . $linhaDelito["nome"] . '</option>';
+    }
+
+    $html.='                        </select> 
                             </div>
 							
                             <div class="form-group row py-3">
@@ -150,7 +156,7 @@ $html.='                        </select>
             </div>
         </section>
     ';
-}else{
+} else {
     $html.='
         <section class="container-fluid mt-4 mb-5">
             <div class="row">

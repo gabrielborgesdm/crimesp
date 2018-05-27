@@ -11,7 +11,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
         $condition = Array("col" => 'id', "value" => $id);
         $delito->apagarDelito($condition);
         if($delito->getConexao()->getErro()){
-            header('Location: formSucesso.php');
+            header('Location: formErro.php');
             die();
         }else{
             header('Location: formSucesso.php');

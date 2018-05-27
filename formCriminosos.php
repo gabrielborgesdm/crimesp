@@ -13,7 +13,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
         $condition = Array("col" => 'id', "value" => $id);
         $crim->apagarCriminoso($condition);
         if($crim->getConexao()->getErro()){
-            header('Location: formSucesso.php');
+            header('Location: formErro.php');
             die();
         }else{
             header('Location: formSucesso.php');
@@ -27,9 +27,8 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
        
         $query = $crim->listarCriminoso(null, $where);
         
-        if($crim->getConexao()->getErro()){
+        if($crim->getConexao()->getErro() != null){
             include 'formErro.php';
-            die();
         }else{
             $linha = $query->fetch(PDO::FETCH_ASSOC);
 

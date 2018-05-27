@@ -3,7 +3,7 @@ require_once'classes\ConexaoPDO.php';
 class Vitima{
 	//Atributos
 	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
-	private $resultadoPost, $conexao;
+	private $fields, $conexao;
 
     //Métodos Especiais
     public function __construct(){
@@ -29,8 +29,8 @@ class Vitima{
 	public function getCpf(){
 		return $this->cpf;	
 	}
-    public function getResultadoPost(){
-    	return $this->resultadoPost;
+    public function getFields(){
+    	return $this->fields;
     }
     public function getConexao(){
         return $this->conexao;
@@ -53,38 +53,39 @@ class Vitima{
 	public function setCpf($cpf){
 		$this->setCpf = $cpf;
 	}
-    public function setResultadoPost($resultadoPost){
-    	$this->resultadoPost = $resultadoPost;
+    public function setFields($resultado){
+        $fields = Array();
+        
+        $this->setNome($resultado["nome"]);
+        $fields['nome'] = $resultado['nome'];
+        
+        $this->setDataNasc($resultado["dataNasc"]);
+        $fields['dataNasc'] = $resultado['dataNasc'];
+        
+        $this->setSexo($resultado["sexo"]);
+        $fields['sexo'] = $resultado['sexo'];
+        
+        if(!empty($resultado["endereco"])){
+            $this->setEndereco($resultado["endereco"]);
+            $fields['endereco'] = $resultado['endereco'];
+        }
+
+        if(!empty($resultado["cpf"])){
+            $this->setCpf($resultado["cpf"]);
+            $fields['cpf'] = $resultado['cpf'];
+        }
+        $this->fields = $fields;
     }
     public function setConexao($conexao){
         $this->conexao = $conexao;
     }
     //Métodos
-    public function recebeDados($resultado) {
-        $conexao = new ConexaoPDO();
-        $this->setConexao($conexao);
-        $this->setResultadoPost($resultado);
-        $this->setNome($resultado["nome"]);
-        $this->setDataNasc($resultado["dataNasc"]);
-        $this->setSexo($resultado["sexo"]);
-        
-        if(!empty($resultado["endereco"])){
-            $this->setEndereco($resultado["endereco"]);
-        }
-
-        if(!empty($resultado["cpf"])){
-            $this->setCpf($resultado["cpf"]);
-        }                   
-    }
     public function cadastrarVitima(){
         $conexao = $this->getConexao();
-    	$conexao->setInsertBuilder("vitima", $this->getResultadoPost());
-    	if($conexao->getErro()){
-    		echo $conexao->getErro();
-    	}
-    	else{
-    		include('formSucesso.php');
-    	}
+    	$conexao->setInsertBuilder("vitima", $this->getFields());
+    	if(!$conexao->getErro()){
+            return $conexao->getQuery();
+        }
     }
     public function listarVitima($campos = null, $where = null){
         $conexao = $this->getConexao();
@@ -107,7 +108,7 @@ class Vitima{
     
     public function alterarVitima($condition){
         $conexao = $this->getConexao();
-        $tupla = $this->getResultadoPost();
-        $conexao->setUpdateBuilder("vitima", $tupla , $condition);
+        $fields = $this->getFields();
+        $conexao->setUpdateBuilder("vitima", $fields , $condition);
     }
 }

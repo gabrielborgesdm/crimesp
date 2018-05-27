@@ -3,7 +3,7 @@ require_once'classes\ConexaoPDO.php';
 class Crime{
 	//Atributos
 	private $descricao, $id, $local, $dataCrime, $criminoso, $vitima, $delito; 
-	private $resultadoPost, $conexao;
+	private $fields, $conexao;
 
     //Métodos Especiais
     public function __construct(){
@@ -31,11 +31,11 @@ class Crime{
     public function getDelito(){
 		return $this->delito;	
 	}
-    public function getResultadoPost(){
-    	return $this->resultadoPost;
-    }
     public function getConexao(){
         return $this->conexao;
+    }
+    public function getFields(){
+       return $this->fields; 
     }
     public function setDescricao($descricao){
 		$this->descricao = $descricao;
@@ -58,46 +58,44 @@ class Crime{
     public function setDelito($delito){
 		$this->delito = $delito;
 	}
-    public function setResultadoPost($resultadoPost){
-    	$this->resultadoPost = $resultadoPost;
+    public function setFields($resultado) {
+        $fields = Array();
+        $this->setDescricao($resultado["descricao"]);
+        $fields['descricao'] = $resultado['descricao'];
+        
+        $this->setLocal($resultado["local"]);
+        $fields['local'] = $resultado['local'];
+        
+        $this->setDataCrime($resultado["dataCrime"]);
+        $fields['data_crime'] = $resultado['dataCrime'];
+        
+		$this->setCriminoso($resultado["criminoso"]);
+        $fields['id_criminoso'] = $resultado['criminoso'];
+        
+        $this->setVitima($resultado['vitima']);
+        $fields['id_vitima'] = $resultado['vitima'];
+        
+        $this->setDelito($resultado['delito']);
+        $fields['id_delito'] = $resultado['delito'];
+        
+        $this->fields = $fields;
     }
     public function setConexao($conexao){
         $this->conexao = $conexao;
     }
-	
+
     //Métodos
-     public function recebeDados($resultado) {
-        $conexao = $this->getConexao();
-        $this->setDescricao($resultado["descricao"]);
-        $this->setLocal($resultado["local"]);
-        $this->setDataCrime($resultado["dataCrime"]);
-		$this->setCriminoso($resultado["criminoso"]);
-        $this->setVitima($resultado["vitima"]);
-        $this->setConexao($conexao);
-        $this->setResultadoPost($resultado);
-    }
-    
     public function cadastrarCrime(){
         $conexao = $this->getConexao();
-    	$conexao->setInsertBuilder("crime", $this->getResultadoPost());
-    	if($conexao->getErro()){
-    		echo $conexao->getErro();
-    	}
-    	else{
-    		include('formSucesso.php');
-    	}
+    	$conexao->setInsertBuilder("crime", $this->getFields());
+    	if(!$conexao->getErro()){
+            return $conexao->getQuery();
+        }
     }
     public function listarCrime($campos = null, $where = null){
         $conexao = $this->getConexao();
-        $tabela = "infocrime"; 
-        if(is_null($campos)){
-            $campos = null;
-        }
-        if(is_null($where)){
-            $where = null; 
-        }
+        $tabela = "view_crime"; 
         $conexao->setSelectBuilder($tabela, $campos, $where);      
-        
         if(!$conexao->getErro()){
             return $conexao->getQuery();
         }
@@ -110,8 +108,8 @@ class Crime{
     
     public function alterarCrime($condition){
         $conexao = $this->getConexao();
-        $tupla = $this->getResultadoPost();
-        $conexao->setUpdateBuilder("crime", $tupla , $condition);
+        $fields = $this->getFields();
+        $conexao->setUpdateBuilder("crime", $fields , $condition);
     }
     
     

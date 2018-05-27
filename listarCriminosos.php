@@ -7,6 +7,7 @@ $query = $crim->listarCriminoso();
 
 if($crim->getConexao()->getErro()){
     header("Location: index.php");
+    die();
 }else{
     $countCrim = $query->rowCount();
 }
@@ -96,7 +97,7 @@ if($countCrim > 0){
                     <h1 class="text-center mt-4 ">Listagem de criminosos</h1>
                     <div class="col-12 mx-auto text-center my-2">
                         <p class="text-danger">Não há criminosos cadastrados</p>
-                        <a class="btn btn-lg btn-outline-secondary" href="index.php">Voltar ao início</a>
+                        <a class="btn btn-lg btn-outline-secondary" href="formCriminosos.php">Cadastrar</a>
                     </div>
                 </div>
             </div>

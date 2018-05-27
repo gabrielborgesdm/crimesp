@@ -2,8 +2,6 @@
 session_start();
 require_once'classes/Crime.php';
 
-$retorno = Array();
-//Recuperar Posts e armazena-los em um Array
 $resultado = Array();
 $loc = "Location: formCrimes.php";
 (empty($_POST["descricao"])) ? header($loc) : $resultado["descricao"] = $_POST["descricao"];
@@ -15,16 +13,16 @@ $loc = "Location: formCrimes.php";
 
 
 $crime = new Crime();
-$crime->recebeDados($resultado);
+$crime->setFields($resultado);
 
 if(isset($_SESSION["updateCrime"])){
     $crime->alterarCrime(Array("id"=>$_SESSION['idCrime']));
     session_destroy();
-    if($crime->getConexao()->getErro()){
+}else{
+    $crime->cadastrarCrime();
+}   
+if($crime->getConexao()->getErro()){
         header("Location: formErro.php");
     }else{
         header("Location: formSucesso.php"); 
     }
-}else{
-    $crime->cadastrarCrime();
-}   
