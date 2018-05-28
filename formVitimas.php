@@ -10,7 +10,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
     if($operacao == 2){
         $condition = Array("col" => 'id', "value" => $id);
         $vitm->apagarVitima($condition);
-        if($vitm->getConexao()->getErro()){
+        if($vitm->getConexao()->getError()){
             header('Location: formErro.php');
             die();
         }else{
@@ -25,7 +25,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
        
         $query = $vitm->listarVitima(null, $where);
         
-        if($vitm->getConexao()->getErro()){
+        if($vitm->getConexao()->getError()){
             include 'formErro.php';
             die();
         }else{
@@ -52,8 +52,8 @@ $html.='                />
                     <div class="form-group py-3">
                         <label for="dataNasc">Data de nascimento*</label>
                         <input type="date" class="form-control" name="dataNasc" id="dataNasc" required';
-                        if(isset($linha['dataNasc'])){
-                            $html.=' value = "' . $linha['dataNasc'] . '" ';
+                        if(isset($linha['data_nasc'])){
+                            $html.=' value = "' . $linha['data_nasc'] . '" ';
                         } 
 $html.='                />
                     </div>

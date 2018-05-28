@@ -5,7 +5,7 @@ require_once 'classes/Delito.php';
 $vitm = new Delito();
 $query = $vitm->listarDelito();
 
-if($vitm->getConexao()->getErro()){
+if($vitm->getConexao()->getError()){
     header("Location:index.php");
 }else{
     $countVitm = $query->rowCount();

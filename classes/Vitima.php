@@ -1,5 +1,5 @@
 <?php
-require_once'classes\ConexaoPDO.php';
+require_once'classes\ConnectDB.php';
 class Vitima{
 	//Atributos
 	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
@@ -7,7 +7,7 @@ class Vitima{
 
     //Métodos Especiais
     public function __construct(){
-        $conexao = new ConexaoPDO();
+        $conexao = new ConnectDB();
         $this->setConexao($conexao);
     }
     
@@ -60,7 +60,7 @@ class Vitima{
         $fields['nome'] = $resultado['nome'];
         
         $this->setDataNasc($resultado["dataNasc"]);
-        $fields['dataNasc'] = $resultado['dataNasc'];
+        $fields['data_nasc'] = $resultado['dataNasc'];
         
         $this->setSexo($resultado["sexo"]);
         $fields['sexo'] = $resultado['sexo'];
@@ -83,7 +83,7 @@ class Vitima{
     public function cadastrarVitima(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("vitima", $this->getFields());
-    	if(!$conexao->getErro()){
+    	if(!$conexao->getError()){
             return $conexao->getQuery();
         }
     }
@@ -97,7 +97,7 @@ class Vitima{
             $where = null; 
         }
         $conexao->setSelectBuilder($tabela, $campos, $where);      
-        if(!$conexao->getErro()){
+        if(!$conexao->getError()){
             return $conexao->getQuery();
         }
     }

@@ -12,7 +12,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
     if($operacao == 2){
         $condition = Array("col" => 'id', "value" => $id);
         $crim->apagarCriminoso($condition);
-        if($crim->getConexao()->getErro()){
+        if($crim->getConexao()->getError()){
             header('Location: formErro.php');
             die();
         }else{
@@ -27,7 +27,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
        
         $query = $crim->listarCriminoso(null, $where);
         
-        if($crim->getConexao()->getErro() != null){
+        if($crim->getConexao()->getError() != null){
             include 'formErro.php';
         }else{
             $linha = $query->fetch(PDO::FETCH_ASSOC);
@@ -55,8 +55,8 @@ $html.='                />
                     <div class="form-group py-3">
                         <label for="dataNasc">Data de nascimento*</label>
                         <input type="date" class="form-control" name="dataNasc" id="dataNasc" required';
-                        if(isset($linha['dataNasc'])){
-                            $html.=' value = "' . $linha['dataNasc'] . '" ';
+                        if(isset($linha['data_nasc'])){
+                            $html.=' value = "' . $linha['data_nasc'] . '" ';
                         }
 $html.='                />
                     </div>
@@ -129,60 +129,40 @@ $html.='
                         </select>
                     </div>
                     <div class="form-group py-3" id="groupDataExec">';
-                    if(isset($linha['sentenca'])){
-                        if($linha['sentenca'] == "Execução"){
-                            $html.="
-                                <style rel='stylesheet' type='text/css'>
-                                    #groupDataExec{
-                                        display:initial !important;
-                                    }
-                                </style>
-                            ";       
-                        }
-                    }
+                  
 $html.='
 
                         <label for="dataExec">Data para execução</label>
                         <input type="date" class="form-control" name="dataExec" id="dataExec"';
-                        if(isset($linha['dataExec'])){
-                            $html.=' value = "' . $linha['dataExec'] . '" ';
+                        if(isset($linha['data_exec'])){
+                            $html.=' value = "' . $linha['data_exec'] . '" ';
                         }
 $html.='                />
                     </div>
                     <div class="form-group py-3" id="groupTempoCadeia">';
-                    if(isset($linha['sentenca'])){
-                        if($linha['sentenca'] == "Prisão"){
-                            $html.="
-                                <style rel='stylesheet' type='text/css'>
-                                    #groupTempoCadeia{
-                                        display:initial !important;
-                                    }
-                                </style>
-                            ";       
-                        }
-                    }
+               
 $html.='
                         <label for="tempoPrisao" class="d-block">Tempo de cadeia</label>
                         <div class="d-flex justify-content-between">
                             <input type="number" class="form-control d-inline-block col mt-2" placeholder="Anos" name="anosPrisao" id="anosPrisao"';
-                        if(isset($linha['tempoCadeia'])){
-                            $linha['tempoCadeia'] = json_decode($linha['tempoCadeia']);
-                            if(isset($linha['tempoCadeia']->anos)){
-                                $html.=' value = "' . $linha['tempoCadeia']->anos . '" ';
+                        if(isset($linha['tempo_cadeia'])){
+                            $linha['tempo_cadeia'] = json_decode($linha['tempo_cadeia']);
+                            if(isset($linha['tempo_cadeia']->anos)){
+                                $html.=' value = "' . $linha['tempo_cadeia']->anos . '" ';
                             }    
                         }
 $html.='                />
                             <input type="number" class="form-control d-inline-block col mx-2 mt-2" placeholder="Meses" name="mesesPrisao" id="mesesPrisao"';
-                        if(isset($linha['tempoCadeia'])){
-                            if(isset($linha['tempoCadeia']->meses)){
-                                $html.=' value = "' . $linha['tempoCadeia']->meses . '" ';
+                        if(isset($linha['tempo_cadeia'])){
+                            if(isset($linha['tempo_cadeia']->meses)){
+                                $html.=' value = "' . $linha['tempo_cadeia']->meses . '" ';
                             }    
                         }
 $html.='                />
                             <input type="number" class="form-control d-inline-block col mt-2" placeholder="Dias" name="diasPrisao" id="DiasPrisao"';
-                        if(isset($linha['tempoCadeia'])){
-                            if(isset($linha['tempoCadeia']->dias)){
-                                $html.=' value = "' . $linha['tempoCadeia']->dias . '" ';
+                        if(isset($linha['tempo_cadeia'])){
+                            if(isset($linha['tempo_cadeia']->dias)){
+                                $html.=' value = "' . $linha['tempo_cadeia']->dias . '" ';
                             }
                         }
 $html.='                />

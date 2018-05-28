@@ -1,5 +1,5 @@
 <?php
-require_once'classes\ConexaoPDO.php';
+require_once'classes\ConnectDB.php';
 class Criminoso{
 	//Atributos
 	private $nome, $id, $endereco, $dataNasc, $sexo, $cpf;
@@ -8,7 +8,7 @@ class Criminoso{
 
     //Métodos Especiais
     public function __construct(){
-        $conexao = new ConexaoPDO();
+        $conexao = new ConnectDB();
         $this->setConexao($conexao);
     }
 
@@ -80,7 +80,7 @@ class Criminoso{
         $fields['nome'] = $resultado["nome"];
         
         $this->setDataNasc($resultado["dataNasc"]);
-        $fields['dataNasc'] = $resultado["dataNasc"];
+        $fields['data_nasc'] = $resultado["dataNasc"];
         
         $this->setSexo($resultado["sexo"]);
         $fields['sexo'] = $resultado["sexo"];
@@ -90,12 +90,12 @@ class Criminoso{
         
         if(!empty($resultado["dataExec"])){
             $this->setDataExec($resultado["dataExec"]);
-            $fields['dataExec'] = $resultado["dataExec"];
+            $fields['data_exec'] = $resultado["dataExec"];
         }
 
         if(!empty($resultado["tempoCadeia"])){
             $this->setTempoCadeia($resultado["tempoCadeia"]);
-            $fields['tempoCadeia'] = $resultado["tempoCadeia"];
+            $fields['tempo_cadeia'] = $resultado["tempoCadeia"];
         }
 
         if(!empty($resultado["endereco"])){
@@ -117,7 +117,7 @@ class Criminoso{
     public function cadastrarCriminoso(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("criminoso", $this->getFields());
-    	if(!$conexao->getErro()){
+    	if(!$conexao->getError()){
     		return $conexao->getQuery();
     	}
     }
@@ -125,7 +125,7 @@ class Criminoso{
         $conexao = $this->getConexao();
         $tabela = "view_criminoso"; 
         $conexao->setSelectBuilder($tabela, $campos, $condition);  
-    	if(!$conexao->getErro()){
+    	if(!$conexao->getError()){
             return $conexao->getQuery();
     	}
     }

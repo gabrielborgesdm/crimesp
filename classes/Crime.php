@@ -1,5 +1,5 @@
 <?php
-require_once'classes\ConexaoPDO.php';
+require_once'classes\ConnectDB.php';
 class Crime{
 	//Atributos
 	private $descricao, $id, $local, $dataCrime, $criminoso, $vitima, $delito; 
@@ -7,7 +7,7 @@ class Crime{
 
     //Métodos Especiais
     public function __construct(){
-        $conexao = new ConexaoPDO();
+        $conexao = new ConnectDB();
         $this->setConexao($conexao);
     }
     public function getDescricao(){
@@ -88,7 +88,7 @@ class Crime{
     public function cadastrarCrime(){
         $conexao = $this->getConexao();
     	$conexao->setInsertBuilder("crime", $this->getFields());
-    	if(!$conexao->getErro()){
+    	if(!$conexao->getError()){
             return $conexao->getQuery();
         }
     }
@@ -96,7 +96,7 @@ class Crime{
         $conexao = $this->getConexao();
         $tabela = "view_crime"; 
         $conexao->setSelectBuilder($tabela, $campos, $where);      
-        if(!$conexao->getErro()){
+        if(!$conexao->getError()){
             return $conexao->getQuery();
         }
     }

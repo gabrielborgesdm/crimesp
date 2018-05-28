@@ -5,7 +5,7 @@ require_once 'classes/Vitima.php';
 $vitm = new Vitima();
 $query = $vitm->listarVitima();
 
-if($vitm->getConexao()->getErro()){
+if($vitm->getConexao()->getError()){
     header("Location:index.php");
 }else{
     $countVitm = $query->rowCount();
@@ -38,7 +38,7 @@ if($countVitm > 0){
         
         $html.='<tr>';
         $html.='<td>' . $linha['nome'] . '</td>';
-        $html.='<td>' . $linha['dataNasc'] . '</td>';
+        $html.='<td>' . $linha['data_nasc'] . '</td>';
         $html.='<td>' . $linha['endereco'] . '</td>';
         $html.='<td>' . $linha['sexo'] . '</td>';
         $html.='<td>' . $linha['cpf'] . '</td>';

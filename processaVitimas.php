@@ -19,7 +19,7 @@ if(isset($_SESSION["updateVitima"])){
     $vitima->cadastrarVitima();
 }
 
-if($vitima->getConexao()->getErro()){
+if($vitima->getConexao()->getError()){
         header("Location: formErro.php");
     }else{
        header("Location: formSucesso.php"); 

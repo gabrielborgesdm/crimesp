@@ -1,14 +1,15 @@
 <?php
+ # Created by Gabriel Borges de Moraes on April 1st, 2018
 
 include 'configDB.php';
 
-class ConexaoPDO {
+class ConnectDB {
 
     //Atributos
     private $host, $dbname, $user, $password;
     private $insertBuilder, $selectBuilder, $updateBuilder, $deleteBuilder;
-    private $builderToExec, $likeBuilder;
-    private $sql, $pdo, $linha, $query, $erro;
+    private $builderToExec, $searchBuilder;
+    private $sql, $pdo, $row, $query, $error;
 
     //Métodos especiais
     public function __construct() {
@@ -17,7 +18,7 @@ class ConexaoPDO {
         $this->setDbname($db['name']);
         $this->setUser($db['user']);
         $this->setPassword($db['password']);
-        $this->conectarBanco();
+        $this->connect();
     }
 
     public function getHost() {
@@ -44,16 +45,16 @@ class ConexaoPDO {
         return $this->pdo;
     }
 
-    public function getLinha() {
-        return $this->linha;
+    public function getRow() {
+        return $this->row;
     }
 
     public function getQuery() {
         return $this->query;
     }
 
-    public function getErro() {
-        return $this->erro;
+    public function getError() {
+        return $this->error;
     }
     
     public function getBuilderToExec() {
@@ -76,8 +77,8 @@ class ConexaoPDO {
         return $this->deleteBuilder;
     }
 
-    public function getLikeBuilder() {
-        return $this->likeBuilder;
+    public function getSearchBuilder() {
+        return $this->searchBuilder;
     }    
 
     public function setHost($host) {
@@ -109,47 +110,54 @@ class ConexaoPDO {
         $this->operacao = $operacao;
     }
 
-    public function setLinha($linha) {
-        $this->linha = $linha;
+    public function setRow($row) {
+        $this->row = $row;
     }
 
     public function setQuery($query) {
         $this->query = $query;
     }
 
-    public function setErro($erro) {
-        $this->erro = $erro;
+    public function setError($error) {
+        $this->error = $error;
     }
     
-    //Essa função dita qual será a proxima operação a ser executada
+    
     public function setBuilderToExec($builder){
+        #It tells to execBuilder() which is the next operation that needs be executed
+        
         $this->builderToExec = $builder;
     }
 
-    public function setSelectBuilder($tabela, $tupla = null, $condition = null) {
-
-        if (is_null($tupla)) {
-            $selectBuilder = "SELECT * FROM $tabela";
+    public function setSelectBuilder($table, $field = null, $condition = null) {
+        /*
+         * setSelectBuilder(): It mounts a select sql string and then goes to the exec function
+         * $field: fields of the table, can be an array with each field name
+         * $field: also can be null(in this case it'll select every field of th table)
+         * $condition: multidimensional associative array, sintax ([i] - [condName] => [conVal], [operator] => [and/or])
+         */
+        if (is_null($field)) {
+            $selectBuilder = "SELECT * FROM $table";
         }
         else {
             $selectBuilder = "SELECT ";
-            if (is_array($tupla)) {
-                $tamanho = count($tupla);
+            if (is_array($field)) {
+                $tamanho = count($field);
                 $i = 0;
-                foreach ($tupla as $col) {
+                foreach ($field as $f) {
                     $i++;
-                    $selectBuilder .= "$col";
+                    $selectBuilder .= "$f";
 
                     if ($i < $tamanho) {
                         $selectBuilder .= ", ";
                     }
                     else {
-                        $selectBuilder .= " FROM $tabela";
+                        $selectBuilder .= " FROM $table";
                     }
                 }
             }
             else {
-                $selectBuilder .= "$tupla FROM $tabela";
+                $selectBuilder .= "$field FROM $table";
             }
         }
 
@@ -170,14 +178,18 @@ class ConexaoPDO {
         $this->execBuilder($selectBuilder);
     }
 
-    public function setInsertBuilder($tabela, $resultado) {
-        $insertBuilder = "INSERT INTO $tabela(";
-        $tamanho = count($resultado);
+    public function setInsertBuilder($table, $result) {
+         /*
+         * setInsertBuilder(): It mounts a insert sql string
+         * $result: multidimensional associative array, sintax ([i] - [$field] => [$value])
+         */
+        $insertBuilder = "INSERT INTO $table(";
+        $tamanho = count($result);
         $i = 0;
 
-        foreach ($resultado as $col => $value) {
+        foreach ($result as $field => $value) {
             $i++;
-            $insertBuilder .= "$col";
+            $insertBuilder .= "$field";
             if ($i < $tamanho) {
                 $insertBuilder .= ", ";
             }
@@ -190,7 +202,7 @@ class ConexaoPDO {
 
         $i = 0;
 
-        foreach ($resultado as $col => $value) {
+        foreach ($result as $field => $value) {
             $i++;
             if (is_int($value) or is_double($value)) {
                 $insertBuilder .= $value;
@@ -215,22 +227,27 @@ class ConexaoPDO {
         $this->execBuilder($insertBuilder);
     }
 
-    public function setUpdateBuilder($tabela, $resultado, $condition) {
-        $updateBuilder = "UPDATE $tabela SET ";
+    public function setUpdateBuilder($table, $result, $condition) {
+         /*
+         * setUpdateBuilder(): It mounts a insert sql string
+         * $result: multidimensional associative array, sintax ([i] - [$field] => [$value])
+         * $condition: associative array
+         */
+        $updateBuilder = "UPDATE $table SET ";
   
         $i = 0;
-        $count = count($resultado);
-        foreach ($resultado as $col => $value) {
+        $count = count($result);
+        foreach ($result as $field => $value) {
             $i++;
             if (is_int($value) or is_double($value)) {
-                $updateBuilder .= "$col = $value";
+                $updateBuilder .= "$field = $value";
             }
             else if (is_array($value)) {
                 $array = json_encode($value);
-                $updateBuilder .= "$col = '" . $array . "'";
+                $updateBuilder .= "$field = '" . $array . "'";
             }
             else {
-                $updateBuilder .= "$col = '".$value."'";
+                $updateBuilder .= "$field = '".$value."'";
             }
             if($i < $count){
                  $updateBuilder .= ", ";
@@ -238,8 +255,8 @@ class ConexaoPDO {
         }
         
         $updateBuilder .= " WHERE ";
-        foreach ($condition as $col => $value) {
-            $updateBuilder .= "$col = '$value[0]' ";
+        foreach ($condition as $field => $value) {
+            $updateBuilder .= "$field = '$value[0]' ";
             if(isset($value[1])){
                 $updateBuilder .= "$value[1] ";
             }
@@ -250,14 +267,44 @@ class ConexaoPDO {
         $this->execBuilder($updateBuilder);
     }
     
-    public function setDeleteBuilder($tabela, $condition){
-        $deleteBuilder = "DELETE FROM $tabela WHERE " . $condition['col'] . " = " . $condition['value'];
+    public function setDeleteBuilder($table, $condition){
+        $deleteBuilder = "DELETE FROM $table WHERE " . $condition['col'] . " = " . $condition['value'];
         $this->setBuilderToExec("delete");
         $this->deleteBuilder = $deleteBuilder;
         $this->execBuilder($deleteBuilder);
     }
     
+    public function setSearchBuilder($mode, $field, $value) {
+        /* 
+        * $mode can be 1 for specific cases(and) or 2 for general ones(or)
+        * $field reffers to  the table fields, it could be an array or not,
+        * $value is the same as $field is, therefore it contains strings to be analyzed
+        */
+        
+        $searchBuilder = "SELECT * FROM $table WHERE $field LIKE %$filter OR"
+                . "$field LIKE %$filter% OR $field LIKE $filter%";
+       
+        $this->setLikeBuilder = $setLikeBuilder;
+        $this->setBuilderToExec("select");
+        $this->execBuilder($setLikeBuilder);
+    }
+    
+    //Methods
+    public function connect() {
+        $host = $this->getHost();
+        $dbname = $this->getDbname();
+        $user = $this->getUser();
+        $password = $this->getPassword();
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->setPDO($pdo);
+    }
+    
     public function execBuilder($builder) {
+        /*
+         * execBuilder() is called after every builder method get finished
+         * $builder is the string created by those methods
+         */
         $pdo = $this->getPdo();
         $operation = $this->getBuilderToExec();
        
@@ -270,7 +317,7 @@ class ConexaoPDO {
                     $query->execute();
                     $this->setQuery($query);
                 } catch (PDOException $e){
-                    $this->setErro($e->getMessage());
+                    $this->setError($e->getMessage());
                 }   
                 break;
             case "insert":
@@ -280,34 +327,11 @@ class ConexaoPDO {
                     $stmt->execute();  
                   } catch(PDOException $e) {
               
-                      $this->setErro($e->getMessage());
+                      $this->setError($e->getMessage());
                   }
                 break;
         } 
             
         
     }
-    
-    public function setLikeBuilder($tabela, $col, $filter) {
-       
-        $setLikeBuilder = "SELECT * FROM $tabela WHERE $col LIKE %$filter OR"
-                . "$col LIKE %$filter% OR $col LIKE $filter%";
-       
-        $this->setLikeBuilder = $setLikeBuilder;
-        $this->setBuilderToExec("select");
-        $this->execBuilder($setLikeBuilder);
-    }
-    
-    //Métodos
-    #Recupera valores e atribui $conexao ao mesmo atributo da classe.
-    public function conectarBanco() {
-        $host = $this->getHost();
-        $dbname = $this->getDbname();
-        $user = $this->getUser();
-        $password = $this->getPassword();
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->setPDO($pdo);
-    }
-
 }

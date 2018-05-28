@@ -5,7 +5,7 @@ require_once 'classes/Crime.php';
 $crim = new Crime();
 $query = $crim->listarCrime();
 
-if($crim->getConexao()->getErro()){
+if($crim->getConexao()->getError()){
     header("Location:index.php");
 }else{
     $countCrim = $query->rowCount();

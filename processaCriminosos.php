@@ -17,10 +17,11 @@ if (!empty($_POST["sentenca"])) {
             header($loc);
             die();
         }
-        else {
+        else{
             (empty($_POST["anosPrisao"]))?: $resultado["tempoCadeia"]["anos"] = $_POST["anosPrisao"];
             (empty($_POST["mesesPrisao"]))?: $resultado["tempoCadeia"]["meses"] = $_POST["mesesPrisao"];
             (empty($_POST["diasPrisao"]))?: $resultado["tempoCadeia"]["dias"] = $_POST["diasPrisao"];
+            
         }
     }
     else if ($resultado["sentenca"] == 3) {
@@ -32,14 +33,14 @@ if (!empty($_POST["sentenca"])) {
             die();
         }
     }
-    else if ($resultado["sentenca"] != 1) {
+    else if ($resultado["sentenca"] != 1){
         header($loc);
         die();
     }
 }
 else{   
     header($loc);
-    die("alo");
+    die();
 }
 
 $crim = new Criminoso();
@@ -52,7 +53,9 @@ if(isset($_SESSION["updateCriminoso"])){
     $crim->cadastrarCriminoso();
 } 
 
-if($crim->getConexao()->getErro()){
+if($crim->getConexao()->getError()){
+    print_r($crim->getConexao()->getError());
+    die();
     header("Location: formErro.php");
 }else{
    header("Location: formSucesso.php"); 

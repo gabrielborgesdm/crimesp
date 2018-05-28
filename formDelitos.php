@@ -10,7 +10,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
     if($operacao == 2){
         $condition = Array("col" => 'id', "value" => $id);
         $delito->apagarDelito($condition);
-        if($delito->getConexao()->getErro()){
+        if($delito->getConexao()->getError()){
             header('Location: formErro.php');
             die();
         }else{
@@ -25,7 +25,7 @@ if(isset($_GET["op"]) and isset($_GET["id"])){
        
         $query = $delito->listarDelito(null, $where);
         
-        if($delito->getConexao()->getErro()){
+        if($delito->getConexao()->getError()){
             include 'formErro.php';
             die();
         }else{

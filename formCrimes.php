@@ -18,7 +18,7 @@ if (isset($_GET["op"]) and isset($_GET["id"])) {
     if ($operacao == 2) {
         $condition = Array("col" => 'id', "value" => $id);
         $crim->apagarCrime($condition);
-        if ($crim->getConexao()->getErro() != null) {
+        if ($crim->getConexao()->getError() != null) {
             header('Location: formErro.php');
             die();
         } else {
@@ -33,7 +33,7 @@ if (isset($_GET["op"]) and isset($_GET["id"])) {
 
         $query = $crim->listarCrime(null, $where);
 
-        if ($crim->getConexao()->getErro()) {
+        if ($crim->getConexao()->getError()) {
             header('Location: formErro.php');
             die();
         } else {
@@ -50,7 +50,7 @@ $queryCrim = $crim->listarCriminoso($campos);
 $queryVitm = $vitm->listarVitima($campos);
 $queryDeli = $deli->listarDelito($campos);
 
-if ($crim->getConexao()->getErro() or $vitm->getConexao()->getErro() or $deli->getConexao()->getErro()) {
+if ($crim->getConexao()->getError() or $vitm->getConexao()->getError() or $deli->getConexao()->getError()) {
     header("Location:index.php");
     die();
 }

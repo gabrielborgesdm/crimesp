@@ -21,7 +21,7 @@ if(isset($_SESSION["updateCrime"])){
 }else{
     $crime->cadastrarCrime();
 }   
-if($crime->getConexao()->getErro()){
+if($crime->getConexao()->getError()){
         header("Location: formErro.php");
     }else{
         header("Location: formSucesso.php"); 

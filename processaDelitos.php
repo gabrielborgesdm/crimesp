@@ -16,7 +16,7 @@ if(isset($_SESSION["updateDelito"])){
 }else{
     $delito->cadastrarDelitos();
 }    
-if($delito->getConexao()->getErro()){
+if($delito->getConexao()->getError()){
     header("Location: formErro.php");
 }else{
    header("Location: formSucesso.php"); 

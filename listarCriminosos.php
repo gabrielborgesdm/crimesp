@@ -3,9 +3,14 @@ include 'header.php';
 require_once 'classes/Criminoso.php';
 
 $crim = new Criminoso();
-$query = $crim->listarCriminoso();
+if(empty($_POST)){    
+    $query = $crim->listarCriminoso();
+}else{
+    $query = $crim->filtrarCriminoso($col, $filter);
+}
 
-if($crim->getConexao()->getErro()){
+if($crim->getConexao()->getError()){
+ 
     header("Location: index.php");
     die();
 }else{
@@ -19,6 +24,14 @@ if($countCrim > 0){
                 <div class="col-11 col-md-10 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Listagem de criminosos</h1>
                     <div class="col-12 my-4 mx-auto table-responsive">
+                        <nav class="navbar navbar-light bg-light justify-content-between">
+                            <a class="navbar-brand">Filtro de pesquisa</a>
+                            
+                            <form class="form-inline" method="post" action="#">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+                            </form>
+                        </nav>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -39,10 +52,10 @@ if($countCrim > 0){
     while($linha = $query->fetch(PDO::FETCH_ASSOC)){
         (isset($linha['endereco'])) ?: $linha['endereco'] = "Nulo";
         (isset($linha['cpf'])) ?: $linha['cpf'] = "Nulo";
-        (isset($linha['dataExec'])) ?: $linha['dataExec'] = "Nulo";
+        (isset($linha['data_exec'])) ?: $linha['data_exec'] = "Nulo";
         
-        if(isset($linha['tempoCadeia'])){
-            $cadeia = json_decode($linha['tempoCadeia']);
+        if(isset($linha['tempo_cadeia'])){
+            $cadeia = json_decode($linha['tempo_cadeia']);
             $anos = 0;
             if(isset($cadeia->anos)){
                 $anos += $cadeia->anos;
@@ -53,23 +66,23 @@ if($countCrim > 0){
             if(isset($cadeia->dias)){
                 $anos += ($cadeia->dias / 31) / 12;
             }
-            $linha['tempoCadeia'] = round($anos, 2) . " ano";
-            if($linha['tempoCadeia'] > 1 ){
-                $linha['tempoCadeia'].='s';
+            $linha['tempo_cadeia'] = round($anos, 2) . " ano";
+            if($linha['tempo_cadeia'] > 1 ){
+                $linha['tempo_cadeia'].='s';
             }
         }else{
-            $linha['tempoCadeia'] = "Nulo";
+            $linha['tempo_cadeia'] = "Nulo";
         }
         
         $html.='<tr>';
         $html.='<td>' . $linha['nome'] . '</td>';
-        $html.='<td>' . $linha['dataNasc'] . '</td>';
+        $html.='<td>' . $linha['data_nasc'] . '</td>';
         $html.='<td>' . $linha['endereco'] . '</td>';
         $html.='<td>' . $linha['sexo'] . '</td>';
         $html.='<td>' . $linha['cpf'] . '</td>';
         $html.='<td>' . $linha['sentenca'] . '</td>';
-        $html.='<td>' . $linha['tempoCadeia'] . '</td>';
-        $html.='<td>' . $linha['dataExec'] . '</td>';
+        $html.='<td>' . $linha['tempo_cadeia'] . '</td>';
+        $html.='<td>' . $linha['data_exec'] . '</td>';
         $html.='<td><a href="formCriminosos.php?op=1&id='.$linha['id'].'">Alterar</a> <a href="formCriminosos.php?op=2&id='.$linha['id'].'">Remover</a></td>';
         $html.='</tr>';
         
