@@ -112,5 +112,57 @@ class Crime{
         $conexao->setUpdateBuilder("crime", $fields , $condition);
     }
     
+    public function filtrarCrime($field, $value, $orderBy = null, $ordenacao = null){
+        if(!is_array($field)){
+            if($field == '*'){
+                $field = Array('descricao', 'local', 'data_crime', 'nome_criminoso', 'nome_vitima', 'nome_delito');
+            }
+        }    
+        
+        if ($orderBy != null){
+            switch ($orderBy){
+                case 1:
+                    $orderBy = "descricao";
+                    break;
+                case 2:
+                    $orderBy = "local";
+                    break;
+                case 3:
+                    $orderBy = "data_crime";
+                    break;
+                case 4:
+                    $orderBy = "nome_criminoso";
+                    break;
+                case 5:
+                    $orderBy = "nome_vitima";
+                    break;
+                case 6:
+                    $orderBy = "nome_delito";
+                    break;
+                default:
+                    $orderBy = null;
+                    break;
+                }
+        
+            if(empty($ordenacao)){
+                $ordenacao = 'ASC';
+            }else{
+                switch($ordenacao){
+                    case 2:
+                        $ordenacao = 'DESC';
+                        break;
+                    default:
+                        $ordenacao = 'ASC';
+                        break;
+                }
+            }
+        }
+        $conexao = $this->getConexao();
+        $table = "view_crime"; 
+        $conexao->setSearchBuilder(2, $table, $field, $value, $orderBy, $ordenacao);  
+    	if(!$conexao->getError()){
+            return $conexao->getQuery();
+        }
+    }
     
 }

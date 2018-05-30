@@ -73,6 +73,7 @@ class Criminoso{
     public function setDataExec($dataExec){
         $this->dataExec = $dataExec;
     }
+    
     public function setFields($resultado) {
         $fields = Array();
         
@@ -142,13 +143,60 @@ class Criminoso{
         $conexao->setUpdateBuilder("criminoso", $fields , $condition);
     }
     
-    public function filtrarCriminoso($col, $filter){
+    public function filtrarCriminoso($field, $value, $orderBy = null, $ordenacao = null){
+        if(!is_array($field)){
+            if($field == '*'){
+                $field = Array('nome', 'endereco', 'data_nasc', 'sexo', 'cpf', 'data_exec', 'sentenca');
+            }
+        }    
+        
+        if ($orderBy != null){
+            switch ($orderBy){
+                case 1:
+                    $orderBy = "nome";
+                    break;
+                case 2:
+                    $orderBy = "data_nasc";
+                    break;
+                case 3:
+                    $orderBy = "endereco";
+                    break;
+                case 4:
+                    $orderBy = "sexo";
+                    break;
+                case 5:
+                    $orderBy = "cpf";
+                    break;
+                case 6:
+                    $orderBy = "sentenca";
+                    break;
+                case 7:
+                    $orderBy = "data_exec";
+                    break;
+                default:
+                    $orderBy = null;
+                    break;
+                }
+        
+            if(empty($ordenacao)){
+                $ordenacao = 'ASC';
+            }else{
+                switch($ordenacao){
+                    case 2:
+                        $ordenacao = 'DESC';
+                        break;
+                    default:
+                        $ordenacao = 'ASC';
+                        break;
+                }
+            }
+        }
         $conexao = $this->getConexao();
-        $tabela = "infocriminoso"; 
-        $conexao->setSelectBuilder($tabela, $col, $filter);  
-    	if(!$conexao->getErro()){
+        $table = "view_criminoso"; 
+        $conexao->setSearchBuilder(2, $table, $field, $value, $orderBy, $ordenacao);  
+    	if(!$conexao->getError()){
             return $conexao->getQuery();
-    	}
+        }
     }
     
 }

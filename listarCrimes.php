@@ -3,10 +3,17 @@ include 'header.php';
 require_once 'classes/Crime.php';
 
 $crim = new Crime();
-$query = $crim->listarCrime();
 
+if(empty($_POST)){    
+    $query = $crim->listarCrime();
+}else{
+    (!empty($_POST["search"]))?$search = $_POST["search"]:$search = null;
+    (!empty($_POST["ordernarPor"]))?$ordenarPor = $_POST["ordernarPor"]:$ordenarPor = null;
+    (!empty($_POST["ordenacao"]))?$ordenacao = $_POST["ordenacao"]:$ordenacao = null;
+    $query = $crim->filtrarCrime('*', $search, $ordenarPor, $ordenacao);
+}
 if($crim->getConexao()->getError()){
-    header("Location:index.php");
+    header("Location:formErro.php");
 }else{
     $countCrim = $query->rowCount();
 }
@@ -17,6 +24,32 @@ if($countCrim > 0){
             <div class="row">
                 <div class="col-11 col-md-10 col-lg-8 col-lg-8 mx-auto bg-light border border-2 border-dark rounded divForm text-secondary">
                     <h1 class="text-center mt-4 ">Listagem de crimes ocorridos</h1>
+                    <section class="row">
+                        <form class="col-12 mt-5" method="post" action="#">
+                            <select class="form-control text-secondary" name="ordernarPor">
+                                <option value="0">Ordenar por</option>
+                                <option value="1">Descrição</option>
+                                <option value="2">Local de ocorrência</option>
+                                <option value="3">Data de ocorrência</option>
+                                <option value="4">Criminoso</option>
+                                <option value="5">Vítima</option>
+                                <option value="6">Delito</option>
+                            </select>
+
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="ordenacao" id="cresc" value="1" class="form-check-input" checked="checked"/>
+                                <label class="form-check-label" for="cresc">Crescente(A-Z)</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="ordenacao" id="decresc" value="2" class="form-check-input">
+                                <label class="form-check-label" for="decresc">Decrescente(Z-A)</label>
+                            </div> 
+                            
+                            <input class="form-control my-2 col-12" type="search" name="search" placeholder="Procurar por" aria-label="Search"/>
+                            <button class="btn btn-outline-success col-2" type="submit">Pesquisar</button>
+                        </form>
+                    </section>
                     <div class="col-12 my-4 mx-auto table-responsive">
                         <table class="table table-hover">
                             <thead>

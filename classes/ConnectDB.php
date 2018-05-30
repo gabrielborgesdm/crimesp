@@ -8,7 +8,7 @@ class ConnectDB {
     //Atributos
     private $host, $dbname, $user, $password;
     private $insertBuilder, $selectBuilder, $updateBuilder, $deleteBuilder;
-    private $builderToExec, $searchBuilder;
+    private $fieldName, $builderToExec, $searchBuilder;
     private $sql, $pdo, $row, $query, $error;
 
     //Métodos especiais
@@ -56,7 +56,9 @@ class ConnectDB {
     public function getError() {
         return $this->error;
     }
-    
+    public function getFieldName() {
+        return $this->fieldName;
+    }
     public function getBuilderToExec() {
         return $this->builderToExec;
     }
@@ -79,8 +81,8 @@ class ConnectDB {
 
     public function getSearchBuilder() {
         return $this->searchBuilder;
-    }    
-
+    }
+    
     public function setHost($host) {
         $this->host = $host;
     }
@@ -122,6 +124,13 @@ class ConnectDB {
         $this->error = $error;
     }
     
+    public function setFieldName($table) {
+        $fieldName = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '" .$table ."'";
+        $this->fieldName = $fieldName;
+        $this->setBuilderToExec("select");
+        $this->execBuilder($fieldName);
+        
+    }
     
     public function setBuilderToExec($builder){
         #It tells to execBuilder() which is the next operation that needs be executed
@@ -273,20 +282,49 @@ class ConnectDB {
         $this->deleteBuilder = $deleteBuilder;
         $this->execBuilder($deleteBuilder);
     }
-    
-    public function setSearchBuilder($mode, $field, $value) {
+
+    public function setSearchBuilder($mode, $table, $field = null, $value = null, $orderBy = null, $order = null) {
         /* 
         * $mode can be 1 for specific cases(and) or 2 for general ones(or)
         * $field reffers to  the table fields, it could be an array or not,
         * $value is the same as $field is, therefore it contains strings to be analyzed
+        * $orderby is the name of the 'order by' sql element
+        * $order can be 'asc', 'desc' or null if $orderBy doesn't be defined 
         */
-        
-        $searchBuilder = "SELECT * FROM $table WHERE $field LIKE %$filter OR"
-                . "$field LIKE %$filter% OR $field LIKE $filter%";
+        ($mode == 1)?$mode = ' AND ':$mode = ' OR ';
+        $searchBuilder = "SELECT * FROM $table";
+        if($field != null and $value != null){
+            $searchBuilder .= " WHERE ";
+            if(is_array($field)){
+                for($i = 0; $i < count($field); $i++){
+                    if(is_array($value)){
+                        foreach($value as $v){
+                            $searchBuilder .= " $field[$i] LIKE '%". $v . "' OR $field[$i] LIKE '%".$v."%' OR $field[$i] LIKE '". $v . "%'";
+                        }
+                    }else{
+                        $searchBuilder .= " $field[$i] LIKE '%". $value . "' OR $field[$i] LIKE '%".$value."%' OR $field[$i] LIKE '". $value . "%'";
+                    }
+                    ($i + 1 == count($field))?: $searchBuilder .= $mode;
+                }
+            }else{
+                if(is_array($value)){
+                    foreach($value as $v){
+                        $searchBuilder .= " $field LIKE '%". $v . "' OR $field LIKE '%".$v."%' OR $field LIKE '". $v . "%'";
+                    }
+                }else{
+                    $searchBuilder .= " $field LIKE '%". $value . "' OR $field LIKE '%".$value."%' OR $field LIKE '". $value . "%'";
+                } 
+            }
+        }
+        if(!empty($orderBy) and !empty($order)){
+            $searchBuilder .=" ORDER BY $orderBy $order ";
+        }
+        $searchBuilder .=' ;'; 
+
+        $this->searchBuilder = $searchBuilder;
        
-        $this->setLikeBuilder = $setLikeBuilder;
         $this->setBuilderToExec("select");
-        $this->execBuilder($setLikeBuilder);
+        $this->execBuilder($searchBuilder);
     }
     
     //Methods

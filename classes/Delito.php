@@ -75,4 +75,42 @@ class Delito{
         $conexao->setUpdateBuilder("delito", $fields , $condition);
     }
     
+    public function filtrarDelito($field, $value, $orderBy = null, $ordenacao = null){
+        if(!is_array($field)){
+            if($field == '*'){
+                $field = Array('nome', 'descricao');
+            }
+        }    
+        if ($orderBy != null){
+            switch ($orderBy){
+                case 1:
+                    $orderBy = "nome";
+                    break;
+                case 2:
+                    $orderBy = "descricao";
+                    break;
+                default:
+                    $orderBy = null;
+            }
+        
+            if(empty($ordenacao)){
+                $ordenacao = 'ASC';
+            }else{
+                switch($ordenacao){
+                    case 2:
+                        $ordenacao = 'DESC';
+                        break;
+                    default:
+                        $ordenacao = 'ASC';
+                        break;
+                }
+            }
+        }
+        $conexao = $this->getConexao();
+        $table = "delito"; 
+        $conexao->setSearchBuilder(2, $table, $field, $value, $orderBy, $ordenacao);  
+    	if(!$conexao->getError()){
+            return $conexao->getQuery();
+        }
+    }    
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 28, 2018 at 08:26 PM
+-- Generation Time: May 30, 2018 at 04:41 PM
 -- Server version: 5.7.21
 -- PHP Version: 5.6.35
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `crime` (
   KEY `id_criminoso` (`id_criminoso`),
   KEY `id_vitima` (`id_vitima`),
   KEY `id_delito` (`id_delito`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
